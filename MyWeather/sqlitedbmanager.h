@@ -10,17 +10,20 @@
 #define DATABASE_HOSTNAME   "DataBase"
 #define DATABASE_NAME       "DataBase.db"
 
-#define TABLE                       "weather"
+#define TABLE_LOCATION                      "location"
+#define TABLE_LOCATION_LOCATION             "location"
 
-#define TABLE_DATE                  "date"
-#define TABLE_CLOUDINESS            "cloudiness"
-#define TABLE_DAY_TEMPERATURE       "day_temp"
-#define TABLE_NIGHT_TEMPERATURE     "night_temp"
-#define TABLE_WIND_DIRECTION        "wind_direction"
-#define TABLE_DAY_WIND_POWER        "day_wind_power"
-#define TABLE_NIGHT_WIND_POWER      "night_wind_power"
-#define TABLE_PRECIPITATION_HOURS   "precipitation_hours"
-#define TABLE_HUMIDITY              "humidity"
+#define TABLE_WEATHER                       "weather"
+
+#define TABLE_WEATHER_DATE                  "date"
+#define TABLE_WEATHER_CLOUDINESS            "cloudiness"
+#define TABLE_WEATHER_DAY_TEMPERATURE       "day_temp"
+#define TABLE_WEATHER_NIGHT_TEMPERATURE     "night_temp"
+#define TABLE_WEATHER_WIND_DIRECTION        "wind_direction"
+#define TABLE_WEATHER_DAY_WIND_POWER        "day_wind_power"
+#define TABLE_WEATHER_NIGHT_WIND_POWER      "night_wind_power"
+#define TABLE_WEATHER_PRECIPITATION_HOURS   "precipitation_hours"
+#define TABLE_WEATHER_HUMIDITY              "humidity"
 
 class SqliteDBManager : public DBManager {
 

@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     anotherday.cpp \
     changeimage.cpp \
+    changelocation.cpp \
     datadb.cpp \
     dbmanager.cpp \
     inputdatawindow.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 HEADERS += \
     anotherday.h \
     changeimage.h \
+    changelocation.h \
     datadb.h \
     dbmanager.h \
     inputdatawindow.h \
@@ -35,6 +37,7 @@ HEADERS += \
 
 FORMS += \
     anotherday.ui \
+    changelocation.ui \
     inputdatawindow.ui \
     mainwindow.ui \
     modifydatawindow.ui \

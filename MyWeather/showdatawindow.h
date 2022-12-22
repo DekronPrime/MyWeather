@@ -41,11 +41,8 @@ private:
     void setupModel(const QString &tableName, const QStringList &headers);
     void createUI();
 
-    void setDate(const QDate &date);
-    QDate getDate() const;
-
 signals:
-    void signalfromShWindow();
+    void signalFromShWindow();
 
 private slots:
     void on_returnButton_clicked();

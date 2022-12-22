@@ -15,11 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     shWindow->setWindowTitle("Show Data");
 
     modWindow = new ModifyDataWindow;
-    modWindow->setWindowTitle("Delete row");
+    modWindow->setWindowTitle("Modify Data");
 
-    connect(inWindow,&InputDataWindow::signalfromInWindow,this,&MainWindow::ReturnToMainMenu);
-    connect(shWindow,&ShowDataWindow::signalfromShWindow,this,&MainWindow::ReturnToMainMenu);
-    connect(modWindow,&ModifyDataWindow::signalfromDelWindow,this,&MainWindow::ReturnToMainMenu);
+    connect(inWindow,&InputDataWindow::signalFromInWindow,this,&MainWindow::returnToMainMenu);
+    connect(shWindow,&ShowDataWindow::signalFromShWindow,this,&MainWindow::returnToMainMenu);
+    connect(modWindow,&ModifyDataWindow::signalFromModWindow,this,&MainWindow::returnToMainMenu);
 
     connect(ui->exitButton,&QPushButton::clicked,this,&QApplication::exit);
 }
@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::ReturnToMainMenu()
+void MainWindow::returnToMainMenu()
 {
     inWindow->hide();
     shWindow->hide();

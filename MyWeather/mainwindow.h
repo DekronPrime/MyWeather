@@ -28,7 +28,7 @@ private:
     ModifyDataWindow *modWindow;
 
 private slots:
-    void ReturnToMainMenu();
+    void returnToMainMenu();
 
     void on_inputButton_clicked();
     void on_showButton_clicked();

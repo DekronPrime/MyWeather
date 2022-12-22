@@ -11,6 +11,7 @@
 #include "dbmanager.h"
 #include "sqlitedbmanager.h"
 #include "changeimage.h"
+#include "changelocation.h"
 
 namespace Ui {
 class InputWindow;
@@ -28,16 +29,21 @@ private:
     Ui::InputWindow *ui;
     DBManager *db;
     ChangeImage *changeimg;
+    ChangeLocation *changelocation;
 
 signals:
-    void signalfromInWindow();
+    void signalFromInWindow();
 
 private slots:
+    void locationChanged(QString location);
+
     void on_returnButton_clicked();
 
-    void CloudinessChanged();
+    void cloudinessChanged();
 
     void on_insertButton_clicked();
+
+    void on_changeLocatioButton_clicked();
 
 protected:
     void keyPressEvent(QKeyEvent *e) override;

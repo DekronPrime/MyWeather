@@ -22,7 +22,7 @@ public:
     ~ModifyDataWindow();
 
 signals:
-    void signalfromDelWindow();
+    void signalFromModWindow();
 
 private:
     Ui::DeleteWindow *ui;
@@ -31,7 +31,7 @@ private:
     SortOrder *sortorder;
 
     int row;
-    bool SortOrder;
+    bool sortOrder;
 
 private:
     void setupModel(const QString &tableName, const QStringList &headers);

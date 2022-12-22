@@ -55,7 +55,7 @@ bool SqliteDBManager::openDataBase()
     db.setHostName(DATABASE_HOSTNAME);
     db.setDatabaseName(DATABASE_NAME);
     if(db.open()){
-        qDebug() << "Succesfully connected to database " << db.databaseName();
+        qDebug() << "Succesfully connected to database " << db.databaseName() << "@" << db.hostName();
         return true;
     } else {
         qDebug() << "Something went wrong while connecting to database";
@@ -70,42 +70,80 @@ void SqliteDBManager::closeDataBase()
 
 bool SqliteDBManager::createTables()
 {
-    QSqlQuery query;
-    if(!query.exec( "CREATE TABLE " TABLE " ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    TABLE_DATE                 " DATE UNIQUE    NOT NULL,"
-                    TABLE_CLOUDINESS           " VARCHAR(50)    NOT NULL,"
-                    TABLE_DAY_TEMPERATURE      " INTEGER        NOT NULL,"
-                    TABLE_NIGHT_TEMPERATURE    " INTEGER        NOT NULL,"
-                    TABLE_WIND_DIRECTION       " VARCHAR(2)     NOT NULL,"
-                    TABLE_DAY_WIND_POWER       " INTEGER        NOT NULL,"
-                    TABLE_NIGHT_WIND_POWER     " INTEGER        NOT NULL,"
-                    TABLE_PRECIPITATION_HOURS  " INTEGER        NOT NULL,"
-                    TABLE_HUMIDITY             " INTEGER        NOT NULL"
-                    " )"
-                    )){
-        qDebug() << "DataBase: error of create " << TABLE;
-        qDebug() << query.lastError().text();
+    QSqlQuery queryLocation, queryData;
+
+    queryLocation.prepare("CREATE TABLE " TABLE_LOCATION " ("
+                          "id INTEGER PRIMARY KEY AUTOINCREMENT         NOT NULL, "
+                          TABLE_LOCATION_LOCATION " VARCHAR(50) UNIQUE  NOT NULL"
+                          ");");
+
+    queryData.prepare("CREATE TABLE " TABLE_WEATHER " ("
+                      "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                      "location_id INTEGER NOT NULL, "
+                      TABLE_WEATHER_DATE                 " DATE UNIQUE    NOT NULL,"
+                      TABLE_WEATHER_CLOUDINESS           " VARCHAR(50)    NOT NULL,"
+                      TABLE_WEATHER_DAY_TEMPERATURE      " INTEGER        NOT NULL,"
+                      TABLE_WEATHER_NIGHT_TEMPERATURE    " INTEGER        NOT NULL,"
+                      TABLE_WEATHER_WIND_DIRECTION       " VARCHAR(2)     NOT NULL,"
+                      TABLE_WEATHER_DAY_WIND_POWER       " INTEGER        NOT NULL,"
+                      TABLE_WEATHER_NIGHT_WIND_POWER     " INTEGER        NOT NULL,"
+                      TABLE_WEATHER_PRECIPITATION_HOURS  " INTEGER        NOT NULL,"
+                      TABLE_WEATHER_HUMIDITY             " INTEGER        NOT NULL,"
+                      "FOREIGN KEY(location_id) REFERENCES " TABLE_LOCATION "(id) ON UPDATE CASCADE ON DELETE CASCADE "
+                      " );");
+
+    if(!queryLocation.exec()){
+        qDebug() << "DataBase: error of create " << TABLE_LOCATION;
+        qDebug() << queryData.lastError().text();
         return false;
-    } else
-        return true;
+    }
+    else if(!queryData.exec()){
+        qDebug() << "DataBase: error of create " << TABLE_WEATHER;
+        qDebug() << queryData.lastError().text();
+        return false;
+    }
+
+    return true;
 }
+
+//bool SqliteDBManager::createTables()
+//{
+//    QSqlQuery query;
+//    if(!query.exec( "CREATE TABLE " TABLE_WEATHER " ("
+//                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+//                    TABLE_WEATHER_DATE                 " DATE UNIQUE    NOT NULL,"
+//                    TABLE_WEATHER_CLOUDINESS           " VARCHAR(50)    NOT NULL,"
+//                    TABLE_WEATHER_DAY_TEMPERATURE      " INTEGER        NOT NULL,"
+//                    TABLE_WEATHER_NIGHT_TEMPERATURE    " INTEGER        NOT NULL,"
+//                    TABLE_WEATHER_WIND_DIRECTION       " VARCHAR(2)     NOT NULL,"
+//                    TABLE_WEATHER_DAY_WIND_POWER       " INTEGER        NOT NULL,"
+//                    TABLE_WEATHER_NIGHT_WIND_POWER     " INTEGER        NOT NULL,"
+//                    TABLE_WEATHER_PRECIPITATION_HOURS  " INTEGER        NOT NULL,"
+//                    TABLE_WEATHER_HUMIDITY             " INTEGER        NOT NULL"
+//                    " )"
+//                    )){
+//        qDebug() << "DataBase: error of create " << TABLE_WEATHER;
+//        qDebug() << query.lastError().text();
+//        return false;
+//    } else
+//        return true;
+//}
 
 bool SqliteDBManager::insertIntoTable(const QString tableName, const DataDB &data)
 {
     QSqlQuery query;
 
-    if (tableName == TABLE){
+    if (tableName == TABLE_WEATHER){
         qDebug() << tableName;
-        query.prepare("INSERT INTO " TABLE " ( " TABLE_DATE ", "
-                      TABLE_CLOUDINESS ", "
-                      TABLE_DAY_TEMPERATURE ", "
-                      TABLE_NIGHT_TEMPERATURE ", "
-                      TABLE_WIND_DIRECTION ", "
-                      TABLE_DAY_WIND_POWER ", "
-                      TABLE_NIGHT_WIND_POWER ", "
-                      TABLE_PRECIPITATION_HOURS ", "
-                      TABLE_HUMIDITY " ) "
+        query.prepare("INSERT INTO " TABLE_WEATHER " ( " TABLE_WEATHER_DATE ", "
+                      TABLE_WEATHER_CLOUDINESS ", "
+                      TABLE_WEATHER_DAY_TEMPERATURE ", "
+                      TABLE_WEATHER_NIGHT_TEMPERATURE ", "
+                      TABLE_WEATHER_WIND_DIRECTION ", "
+                      TABLE_WEATHER_DAY_WIND_POWER ", "
+                      TABLE_WEATHER_NIGHT_WIND_POWER ", "
+                      TABLE_WEATHER_PRECIPITATION_HOURS ", "
+                      TABLE_WEATHER_HUMIDITY " ) "
                                             "VALUES (:Date, :Cloudiness, :Daytemp, :Nighttemp,"
                                             ":Winddirection, :Daywindpower, :Nightwindpower,"
                                             ":Precipitationhours, :Humidity )");
@@ -134,7 +172,7 @@ DataDB * SqliteDBManager::selectFromWeather(QDate date)
 {
     QSqlQuery query;
 
-        query.prepare("SELECT * FROM " TABLE " WHERE " TABLE_DATE " = :date;");
+        query.prepare("SELECT * FROM " TABLE_WEATHER " WHERE " TABLE_WEATHER_DATE " = :date;");
         query.bindValue(":date", date);
 
         DataDB *data = nullptr;
@@ -157,7 +195,7 @@ DataDB * SqliteDBManager::selectFromWeather(QDate date)
                 data->setPrecipitationHours(query.value("Precipitation_Hours").toInt());
                 data->setHumidity(query.value("Humidity").toInt());
             } else {
-                //qDebug () << "Data not found";
+                qDebug () << "Data not found";
             }
         }
         return data;
@@ -166,19 +204,19 @@ DataDB * SqliteDBManager::selectFromWeather(QDate date)
 void SqliteDBManager::update(const DataDB &data){
     QSqlQuery query;
 
-    query.prepare("UPDATE  " TABLE
-                  " SET " TABLE_CLOUDINESS " = '" + data.getCloudiness() + "', "
-                  " " TABLE_DAY_TEMPERATURE " = " + QString::number(data.getDayTemp()) + ", "
-                  " " TABLE_NIGHT_TEMPERATURE " = " + QString::number(data.getNightTemp()) + ", "
-                  " " TABLE_WIND_DIRECTION " = '" + data.getWindDirection() + "', "
-                  " " TABLE_DAY_WIND_POWER " = " + QString::number(data.getDayWindPower()) + ", "
-                  " " TABLE_NIGHT_WIND_POWER " = " + QString::number(data.getNightWindPower()) + ", "
-                  " " TABLE_PRECIPITATION_HOURS " = " + QString::number(data.getPrecipitationHours()) + ", "
-                  " " TABLE_HUMIDITY " = " + QString::number(data.getHumidity()) + " "
+    query.prepare("UPDATE  " TABLE_WEATHER
+                  " SET " TABLE_WEATHER_CLOUDINESS " = '" + data.getCloudiness() + "', "
+                  " " TABLE_WEATHER_DAY_TEMPERATURE " = " + QString::number(data.getDayTemp()) + ", "
+                  " " TABLE_WEATHER_NIGHT_TEMPERATURE " = " + QString::number(data.getNightTemp()) + ", "
+                  " " TABLE_WEATHER_WIND_DIRECTION " = '" + data.getWindDirection() + "', "
+                  " " TABLE_WEATHER_DAY_WIND_POWER " = " + QString::number(data.getDayWindPower()) + ", "
+                  " " TABLE_WEATHER_NIGHT_WIND_POWER " = " + QString::number(data.getNightWindPower()) + ", "
+                  " " TABLE_WEATHER_PRECIPITATION_HOURS " = " + QString::number(data.getPrecipitationHours()) + ", "
+                  " " TABLE_WEATHER_HUMIDITY " = " + QString::number(data.getHumidity()) + " "
                   " WHERE date = '" + data.getDate().toString("yyyy-MM-dd") + "';");
 
     if(!query.exec()){
-        qDebug() << "error updating " << TABLE;
+        qDebug() << "error updating " << TABLE_WEATHER;
         qDebug() << query.lastError().text();
         qDebug() << query.lastQuery();
         throw query.lastError().text() + " caused by: " + query.lastQuery();

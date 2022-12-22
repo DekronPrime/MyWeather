@@ -10,9 +10,9 @@ ModifyDataWindow::ModifyDataWindow(QWidget *parent) :
     db = SqliteDBManager::getInstance();
 
     connect(ui->sort_CB,&QComboBox::currentIndexChanged,this,&ModifyDataWindow::sortChanged);
-    this->SortOrder = true;
+    this->sortOrder = true;
 
-    this->setupModel(TABLE,
+    this->setupModel(TABLE_WEATHER,
                      QStringList() << tr("id")
                                    << tr("Date")
                                    << tr("Cloudiness")
@@ -66,12 +66,12 @@ void ModifyDataWindow::keyPressEvent(QKeyEvent *e)
 
 void ModifyDataWindow::on_returnButton_clicked()
 {
-    emit signalfromDelWindow();
+    emit signalFromModWindow();
 }
 
 void ModifyDataWindow::sortChanged()
 {
-    sortorder->sortChanged(model,ui->sort_CB,SortOrder);
+    sortorder->sortChanged(model,ui->sort_CB,sortOrder);
 }
 
 
@@ -91,12 +91,12 @@ void ModifyDataWindow::on_deleteButton_clicked()
 
 void ModifyDataWindow::on_changeSortButton_clicked()
 {
-    if(this->SortOrder){
-        this->SortOrder = false;
+    if(this->sortOrder){
+        this->sortOrder = false;
         ui->changeSortButton->setText("Asc");
     }
     else{
-        this->SortOrder = true;
+        this->sortOrder = true;
         ui->changeSortButton->setText("Desc");
     }
     sortChanged();

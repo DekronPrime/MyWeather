@@ -18,7 +18,7 @@ ShowDataWindow::ShowDataWindow(QWidget *parent) :
     changeimg->setErrorImage(ui->nodata_img);
     changeimg->setImages(ui->temp_img,ui->direction_img,ui->wind_img,ui->fallout_img,ui->humidity_img);
 
-    this->setupModel(TABLE,
+    this->setupModel(TABLE_WEATHER,
                      QStringList() << tr("id")
                                    << tr("Date")
                                    << tr("Cloudiness")
@@ -71,7 +71,7 @@ void ShowDataWindow::createUI()
 
 void ShowDataWindow::on_returnButton_clicked()
 {
-    emit signalfromShWindow();
+    emit signalFromShWindow();
 }
 
 void ShowDataWindow::on_todayButton_clicked()

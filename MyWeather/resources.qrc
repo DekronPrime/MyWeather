@@ -2,7 +2,6 @@
     <qresource prefix="/img">
         <file>images/compass.png</file>
         <file>images/fallout.png</file>
-        <file>images/fog.png</file>
         <file>images/humidity.png</file>
         <file>images/mostly.png</file>
         <file>images/partly.png</file>
@@ -14,7 +13,6 @@
         <file>images/temperature.png</file>
         <file>images/thunderstorm.png</file>
         <file>images/wind.png</file>
-        <file>images/lightning.png</file>
         <file>images/nodata.png</file>
     </qresource>
 </RCC>

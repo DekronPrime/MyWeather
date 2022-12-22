@@ -1,5 +1,5 @@
 #include "inputdatawindow.h"
-#include "ui_inputwindow.h"
+#include "ui_inputdatawindow.h"
 #include <QPixmap>
 
 InputDataWindow::InputDataWindow(QWidget *parent) :
@@ -12,9 +12,10 @@ InputDataWindow::InputDataWindow(QWidget *parent) :
 
     changeimg->setImages(ui->temperature_img,ui->compass_img,ui->wind_img,ui->perticipation_img,ui->humidity_img);
 
-    connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::CloudinessChanged);
+    connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
 
     ui->dateEdit->setDate(QDate::currentDate());
+    ui->statusbar->showMessage("No location");
 }
 
 InputDataWindow::~InputDataWindow()
@@ -22,12 +23,17 @@ InputDataWindow::~InputDataWindow()
     delete ui;
 }
 
-void InputDataWindow::on_returnButton_clicked()
+void InputDataWindow::locationChanged(QString location)
 {
-    emit signalfromInWindow();
+    ui->statusbar->showMessage("Current location: " + location + " (done using signals)");
 }
 
-void InputDataWindow::CloudinessChanged()
+void InputDataWindow::on_returnButton_clicked()
+{
+    emit signalFromInWindow();
+}
+
+void InputDataWindow::cloudinessChanged()
 {
     changeimg->setImage(ui->cloudiness_CB->currentText(),ui->cloudiness_img);
 }
@@ -57,9 +63,9 @@ void InputDataWindow::on_insertButton_clicked()
         data.setPrecipitationHours(ui->perticipationHours_SB->value());
         data.setHumidity(ui->humidity_SB->value());
 
-        if (db->insertIntoTable(TABLE,data))
+        if (db->insertIntoTable(TABLE_WEATHER,data))
             QMessageBox::information(this,tr("Completed"),
-                                     tr("this day has been successfully inserted into the database"));
+                                     tr("This day has been successfully inserted into the database"));
         else {
             int res = QMessageBox::question(this,tr("Error"),
                                   tr("The database already has the row with this date\n"
@@ -70,5 +76,14 @@ void InputDataWindow::on_insertButton_clicked()
                 db->update(data);
         }
     }
+}
+
+
+void InputDataWindow::on_changeLocatioButton_clicked()
+{
+    changelocation = new ChangeLocation;
+    changelocation->setWindowTitle("Change Location");
+    changelocation->show();
+    connect(changelocation,&ChangeLocation::locationchangedSignal,this,&InputDataWindow::locationChanged);
 }
 
