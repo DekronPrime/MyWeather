@@ -21,6 +21,7 @@
        <widget class="QLabel" name="label">
         <property name="font">
          <font>
+          <family>Times New Roman</family>
           <pointsize>16</pointsize>
          </font>
         </property>
@@ -48,6 +49,7 @@
          <widget class="QLabel" name="sort_lbl">
           <property name="font">
            <font>
+            <family>Times New Roman</family>
             <pointsize>14</pointsize>
            </font>
           </property>
@@ -63,6 +65,7 @@
          <widget class="QComboBox" name="sort_CB">
           <property name="font">
            <font>
+            <family>Times New Roman</family>
             <pointsize>14</pointsize>
            </font>
           </property>
@@ -140,6 +143,31 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>175</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Change Location</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -155,6 +183,9 @@
       </property>
       <property name="focusPolicy">
        <enum>Qt::TabFocus</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
       </property>
       <property name="editTriggers">
        <set>QAbstractItemView::DoubleClicked</set>

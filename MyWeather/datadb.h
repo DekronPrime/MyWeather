@@ -7,6 +7,9 @@
 class DataDB
 {
 private:
+    QString location;
+
+    int location_id;
     QDate date;
     QString cloudiness;
     int day_temp;
@@ -19,7 +22,9 @@ private:
 
 public:
     DataDB();
+    void setLocation(const QString &location);
 
+    void setLocationID(const int &location_id);
     void setDate(const QDate &date);
     void setCloudiness(const QString &cloudiness);
     void setDayTemp(const int &day_temp);
@@ -30,6 +35,9 @@ public:
     void setPrecipitationHours(const int &precipitation_hours);
     void setHumidity(const int &humidity);
 
+    QString getLocation() const;
+
+    int getLocationID() const;
     QDate getDate() const;
     QString getCloudiness() const;
     int getDayTemp() const;

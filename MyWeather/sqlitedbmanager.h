@@ -2,7 +2,6 @@
 #define DATABASE_H
 
 #include <QSqlDatabase>
-#include <QVariantList>
 
 #include <dbmanager.h>
 
@@ -11,9 +10,10 @@
 #define DATABASE_NAME       "DataBase.db"
 
 #define TABLE_LOCATION                      "location"
-#define TABLE_LOCATION_LOCATION             "location"
+#define TABLE_LOCATION_CITY                 "city"
 
 #define TABLE_WEATHER                       "weather"
+
 
 #define TABLE_WEATHER_DATE                  "date"
 #define TABLE_WEATHER_CLOUDINESS            "cloudiness"
@@ -35,6 +35,7 @@ public:
     bool insertIntoTable(const QString tableName, const DataDB &data);
     DataDB * selectFromWeather(QDate date);
     void update(const DataDB &data);
+    int getLocationID(QString location);
 
 private:
     QSqlDatabase    db;

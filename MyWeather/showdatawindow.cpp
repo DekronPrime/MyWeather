@@ -1,5 +1,5 @@
 #include "showdatawindow.h"
-#include "ui_showwindow.h"
+#include "ui_showdatawindow.h"
 
 
 ShowDataWindow::ShowDataWindow(QWidget *parent) :
@@ -35,7 +35,9 @@ ShowDataWindow::ShowDataWindow(QWidget *parent) :
 
     connect(ui->sort_CB,&QComboBox::currentIndexChanged,this,&ShowDataWindow::sortChanged);
 
-    on_todayButton_clicked();
+    //on_todayButton_clicked();
+
+    this->location = ui->location_cb->currentText();
 }
 
 ShowDataWindow::~ShowDataWindow()
@@ -77,14 +79,14 @@ void ShowDataWindow::on_returnButton_clicked()
 void ShowDataWindow::on_todayButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
-    printData(QDate::currentDate());
+    //printData(QDate::currentDate());
 }
 
 
 void ShowDataWindow::on_yesterdayButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
-    printData(QDate::currentDate().addDays(-1));
+    //printData(QDate::currentDate().addDays(-1));
 }
 
 
@@ -102,36 +104,37 @@ void ShowDataWindow::on_anotherButton_clicked()
 void ShowDataWindow::adFormAccepted(QDate date)
 {
     ui->stackedWidget->setCurrentIndex(1);
-    printData(date);
+    //printData(date);
 }
 
-void ShowDataWindow::printData(QDate date)
-{
-    this->date = date;
-    DataDB * data = db->selectFromWeather(date);
-    if(data){
-        ui->statusbar->clearMessage();
-        ui->stackedWidget->setCurrentIndex(1);
-        ui->date_lbl->setText(data->getDate().toString("dddd, MMMM dd, yyyy"));
-        ui->cloudiness_lbl->setText(data->getCloudiness());
-        changeimg->setImage(ui->cloudiness_lbl->text(),ui->cloudiness_img);
-        ui->daytemp_lbl->setText(QString::number(data->getDayTemp()));
-        ui->nighttemp_lbl->setText(QString::number(data->getNightTemp()));
-        ui->winddirection_lbl->setText(data->getWindDirection());
-        ui->daywindpower_lbl->setText(QString::number(data->getDayWindPower()));
-        ui->nightwindpower_lbl->setText(QString::number(data->getNightWindPower()));
-        ui->precitipationhours_lbl->setText(QString::number(data->getPrecipitationHours()));
-        if(ui->precitipationhours_lbl->text() == '1')
-            ui->label_11->setText("hour");
-        else
-            ui->label_11->setText("hours");
-        ui->humidity_lbl->setText(QString::number(data->getHumidity()));
-    }
-    else{
-        ui->statusbar->showMessage(this->date.toString("dddd, MMMM dd, yyyy")+" not found");
-        ui->stackedWidget->setCurrentIndex(0);
-    }
-}
+//void ShowDataWindow::printData(QDate date)
+//{
+//    this->date = date;
+//    DataDB * data = db->selectFromWeather(date,this->location);
+//    if(data){
+//        ui->statusbar->clearMessage();
+//        ui->stackedWidget->setCurrentIndex(1);
+//        ui->date_lbl->setText(data->getDate().toString("dddd, MMMM dd, yyyy"));
+//        ui->location_lbl->setText(data->getLocation());
+//        ui->cloudiness_lbl->setText(data->getCloudiness());
+//        changeimg->setImage(ui->cloudiness_lbl->text(),ui->cloudiness_img);
+//        ui->daytemp_lbl->setText(QString::number(data->getDayTemp()));
+//        ui->nighttemp_lbl->setText(QString::number(data->getNightTemp()));
+//        ui->winddirection_lbl->setText(data->getWindDirection());
+//        ui->daywindpower_lbl->setText(QString::number(data->getDayWindPower()));
+//        ui->nightwindpower_lbl->setText(QString::number(data->getNightWindPower()));
+//        ui->precitipationhours_lbl->setText(QString::number(data->getPrecipitationHours()));
+//        if(ui->precitipationhours_lbl->text() == QString::number(1))
+//            ui->label_11->setText("hour");
+//        else
+//            ui->label_11->setText("hours");
+//        ui->humidity_lbl->setText(QString::number(data->getHumidity()));
+//    }
+//    else{
+//        ui->statusbar->showMessage(this->date.toString("dddd, MMMM dd, yyyy")+" not found");
+//        ui->stackedWidget->setCurrentIndex(0);
+//    }
+//}
 
 void ShowDataWindow::sortChanged()
 {
@@ -142,8 +145,8 @@ void ShowDataWindow::refreshData()
 {
     if(ui->stackedWidget->currentIndex() == 2)
         model->select();
-    else
-        printData(this->date);
+    //else
+        //printData(this->date);
 }
 
 void ShowDataWindow::keyPressEvent(QKeyEvent *e)

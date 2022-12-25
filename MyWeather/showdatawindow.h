@@ -36,6 +36,7 @@ private:
     ChangeImage *changeimg;
     bool sortButton;
     QDate date;
+    QString location;
 
 private:
     void setupModel(const QString &tableName, const QStringList &headers);
@@ -53,7 +54,7 @@ private slots:
     void on_anotherButton_clicked();
 
     void adFormAccepted(QDate date);
-    void printData(QDate date);
+    //void printData(QDate date);
     void sortChanged();
 
     void on_changeSortButton_clicked();

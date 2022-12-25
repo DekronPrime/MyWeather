@@ -15,6 +15,7 @@ public:
     virtual bool insertIntoTable(const QString tableName, const DataDB &data) = 0;
     virtual DataDB * selectFromWeather(QDate date) = 0;
     virtual void update(const DataDB &data) = 0;
+    virtual int getLocationID(QString location) = 0;
 };
 
 #endif // DBMANAGER_H

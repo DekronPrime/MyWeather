@@ -103,7 +103,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Choose the location</string>
+         <string>Choose the location:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -111,10 +111,10 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="changeLocatioButton">
+       <widget class="QComboBox" name="location_cb">
         <property name="minimumSize">
          <size>
-          <width>175</width>
+          <width>200</width>
           <height>40</height>
          </size>
         </property>
@@ -124,8 +124,64 @@
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::InsertAlphabetically</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ternopil</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Lviv</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kyiv</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Odesa</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Kherson</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>45</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Rockwell Extra Bold</family>
+          <pointsize>14</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
-         <string>Change location</string>
+         <string>+</string>
         </property>
        </widget>
       </item>
@@ -877,7 +933,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Preferred</enum>
+           <enum>QSizePolicy::Expanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -982,6 +1038,9 @@
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>

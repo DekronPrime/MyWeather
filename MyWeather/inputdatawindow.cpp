@@ -12,7 +12,7 @@ InputDataWindow::InputDataWindow(QWidget *parent) :
 
     changeimg->setImages(ui->temperature_img,ui->compass_img,ui->wind_img,ui->perticipation_img,ui->humidity_img);
 
-    connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
+    //connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
 
     ui->dateEdit->setDate(QDate::currentDate());
     ui->statusbar->showMessage("No location");
@@ -23,20 +23,15 @@ InputDataWindow::~InputDataWindow()
     delete ui;
 }
 
-void InputDataWindow::locationChanged(QString location)
-{
-    ui->statusbar->showMessage("Current location: " + location + " (done using signals)");
-}
-
 void InputDataWindow::on_returnButton_clicked()
 {
     emit signalFromInWindow();
 }
 
-void InputDataWindow::cloudinessChanged()
-{
-    changeimg->setImage(ui->cloudiness_CB->currentText(),ui->cloudiness_img);
-}
+//void InputDataWindow::cloudinessChanged(int index)
+//{
+//    changeimg->setImage(ui->cloudiness_CB->currentText(),ui->cloudiness_img);
+//}
 
 void InputDataWindow::keyPressEvent(QKeyEvent *e)
 {
@@ -78,12 +73,19 @@ void InputDataWindow::on_insertButton_clicked()
     }
 }
 
-
-void InputDataWindow::on_changeLocatioButton_clicked()
+void InputDataWindow::on_location_cb_currentIndexChanged(int index)
 {
-    changelocation = new ChangeLocation;
-    changelocation->setWindowTitle("Change Location");
-    changelocation->show();
-    connect(changelocation,&ChangeLocation::locationchangedSignal,this,&InputDataWindow::locationChanged);
+    DataDB data;
+    data.setLocation(ui->location_cb->currentText());
+    if(index == 0)
+        ui->statusbar->showMessage("No location");
+    else
+        ui->statusbar->showMessage("Current location: " + data.getLocation());
+}
+
+
+void InputDataWindow::on_cloudiness_CB_currentTextChanged(const QString &text)
+{
+    changeimg->setImage(text,ui->cloudiness_img);
 }
 

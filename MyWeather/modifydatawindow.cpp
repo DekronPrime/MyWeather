@@ -74,6 +74,11 @@ void ModifyDataWindow::sortChanged()
     sortorder->sortChanged(model,ui->sort_CB,sortOrder);
 }
 
+void ModifyDataWindow::locationChanged(QString location)
+{
+    ui->statusbar->showMessage("Current location: " + location + " (done using signals)");
+}
+
 
 void ModifyDataWindow::on_tableView_clicked(const QModelIndex &index)
 {
@@ -105,5 +110,14 @@ void ModifyDataWindow::on_changeSortButton_clicked()
 void ModifyDataWindow::on_refreshButton_clicked()
 {
     model->select();
+}
+
+
+void ModifyDataWindow::on_pushButton_clicked()
+{
+    changelocation = new ChangeLocation;
+    changelocation->setWindowTitle("Change Location");
+    changelocation->show();
+    connect(changelocation,&ChangeLocation::locationchangedSignal,this,&ModifyDataWindow::locationChanged);
 }
 

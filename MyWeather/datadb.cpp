@@ -5,49 +5,14 @@ DataDB::DataDB()
 
 }
 
-QDate DataDB::getDate() const
+void DataDB::setLocation(const QString &location)
 {
-    return this->date;
+    this->location = location;
 }
 
-QString DataDB::getCloudiness() const
+void DataDB::setLocationID(const int &location_id)
 {
-    return this->cloudiness;
-}
-
-int DataDB::getDayTemp() const
-{
-    return this->day_temp;
-}
-
-int DataDB::getNightTemp() const
-{
-    return this->night_temp;
-}
-
-QString DataDB::getWindDirection() const
-{
-    return this->wind_direction;
-}
-
-int DataDB::getDayWindPower() const
-{
-    return this->day_wind_power;
-}
-
-int DataDB::getNightWindPower() const
-{
-    return this->night_wind_power;
-}
-
-int DataDB::getPrecipitationHours() const
-{
-    return this->precipitation_hours;
-}
-
-int DataDB::getHumidity() const
-{
-    return this->humidity;
+    this->location_id = location_id;
 }
 
 void DataDB::setDate(const QDate &date)
@@ -93,4 +58,61 @@ void DataDB::setPrecipitationHours(const int &precipitation_hours)
 void DataDB::setHumidity(const int &humidity)
 {
     this->humidity = humidity;
+}
+
+
+
+QString DataDB::getLocation() const
+{
+    return this->location;
+}
+
+int DataDB::getLocationID() const
+{
+    return this->location_id;
+}
+
+QDate DataDB::getDate() const
+{
+    return this->date;
+}
+
+QString DataDB::getCloudiness() const
+{
+    return this->cloudiness;
+}
+
+int DataDB::getDayTemp() const
+{
+    return this->day_temp;
+}
+
+int DataDB::getNightTemp() const
+{
+    return this->night_temp;
+}
+
+QString DataDB::getWindDirection() const
+{
+    return this->wind_direction;
+}
+
+int DataDB::getDayWindPower() const
+{
+    return this->day_wind_power;
+}
+
+int DataDB::getNightWindPower() const
+{
+    return this->night_wind_power;
+}
+
+int DataDB::getPrecipitationHours() const
+{
+    return this->precipitation_hours;
+}
+
+int DataDB::getHumidity() const
+{
+    return this->humidity;
 }
