@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     addlocation.cpp \
+    alterlocation.cpp \
     anotherday.cpp \
     changeimage.cpp \
     datadb.cpp \
     dbmanager.cpp \
+    editlocation.cpp \
     inputdatawindow.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,10 +26,12 @@ SOURCES += \
 
 HEADERS += \
     addlocation.h \
+    alterlocation.h \
     anotherday.h \
     changeimage.h \
     datadb.h \
     dbmanager.h \
+    editlocation.h \
     inputdatawindow.h \
     mainwindow.h \
     modifydatawindow.h \
@@ -37,7 +41,9 @@ HEADERS += \
 
 FORMS += \
     addlocation.ui \
+    alterlocation.ui \
     anotherday.ui \
+    editlocation.ui \
     inputdatawindow.ui \
     mainwindow.ui \
     modifydatawindow.ui \

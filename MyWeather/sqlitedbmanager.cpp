@@ -170,39 +170,36 @@ QStringList SqliteDBManager::getAllLocations()
     return locations;
 }
 
-bool SqliteDBManager::insertIntoTable(const QString tableName, const DataDB &data)
+bool SqliteDBManager::insert(const DataDB &data)
 {
     QSqlQuery query;
-    qDebug() << tableName;
 
-    if (tableName == TABLE_WEATHER){
-        query.prepare("INSERT INTO " TABLE_WEATHER " (location_id, "
-                      TABLE_WEATHER_DATE ", "
-                      TABLE_WEATHER_CLOUDINESS ", "
-                      TABLE_WEATHER_DAY_TEMPERATURE ", "
-                      TABLE_WEATHER_NIGHT_TEMPERATURE ", "
-                      TABLE_WEATHER_WIND_DIRECTION ", "
-                      TABLE_WEATHER_DAY_WIND_POWER ", "
-                      TABLE_WEATHER_NIGHT_WIND_POWER ", "
-                      TABLE_WEATHER_PRECIPITATION_HOURS ", "
-                      TABLE_WEATHER_HUMIDITY " ) "
-                                            "VALUES (:LocationID, :Date, :Cloudiness, :Daytemp, :Nighttemp,"
-                                            ":Winddirection, :Daywindpower, :Nightwindpower,"
-                                            ":Precipitationhours, :Humidity );");
-        query.bindValue(":LocationID",          this->getLocationID(data.getLocation()));
-        query.bindValue(":Date",                data.getDate());
-        query.bindValue(":Cloudiness",          data.getCloudiness());
-        query.bindValue(":Daytemp",             data.getDayTemp());
-        query.bindValue(":Nighttemp",           data.getNightTemp());
-        query.bindValue(":Winddirection",       data.getWindDirection());
-        query.bindValue(":Daywindpower",        data.getDayWindPower());
-        query.bindValue(":Nightwindpower",      data.getNightWindPower());
-        query.bindValue(":Precipitationhours",  data.getPrecipitationHours());
-        query.bindValue(":Humidity",            data.getHumidity());
-    }
+    query.prepare("INSERT INTO " TABLE_WEATHER " (location_id, "
+                  TABLE_WEATHER_DATE ", "
+                  TABLE_WEATHER_CLOUDINESS ", "
+                  TABLE_WEATHER_DAY_TEMPERATURE ", "
+                  TABLE_WEATHER_NIGHT_TEMPERATURE ", "
+                  TABLE_WEATHER_WIND_DIRECTION ", "
+                  TABLE_WEATHER_DAY_WIND_POWER ", "
+                  TABLE_WEATHER_NIGHT_WIND_POWER ", "
+                  TABLE_WEATHER_PRECIPITATION_HOURS ", "
+                  TABLE_WEATHER_HUMIDITY " ) "
+                                        "VALUES (:LocationID, :Date, :Cloudiness, :Daytemp, :Nighttemp,"
+                                        ":Winddirection, :Daywindpower, :Nightwindpower,"
+                                        ":Precipitationhours, :Humidity );");
+    query.bindValue(":LocationID",          this->getLocationID(data.getLocation()));
+    query.bindValue(":Date",                data.getDate());
+    query.bindValue(":Cloudiness",          data.getCloudiness());
+    query.bindValue(":Daytemp",             data.getDayTemp());
+    query.bindValue(":Nighttemp",           data.getNightTemp());
+    query.bindValue(":Winddirection",       data.getWindDirection());
+    query.bindValue(":Daywindpower",        data.getDayWindPower());
+    query.bindValue(":Nightwindpower",      data.getNightWindPower());
+    query.bindValue(":Precipitationhours",  data.getPrecipitationHours());
+    query.bindValue(":Humidity",            data.getHumidity());
 
     if(!query.exec()){
-        qDebug() << "error insert into " << tableName;
+        qDebug() << "error insert into " << TABLE_WEATHER;
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
 
         return false;
@@ -210,7 +207,7 @@ bool SqliteDBManager::insertIntoTable(const QString tableName, const DataDB &dat
         return true;
 }
 
-bool SqliteDBManager::insertIntoTable(const QString &location)
+bool SqliteDBManager::insert(const QString &location)
 {
     QSqlQuery query;
     query.prepare("INSERT INTO " TABLE_LOCATION " ( " TABLE_LOCATION_CITY " ) "
@@ -293,6 +290,18 @@ void SqliteDBManager::remove(const QString &location)
         qDebug() << query.lastError().text();
         qDebug() << query.lastQuery();
         throw query.lastError().text() + " caused by: " + query.lastQuery();
+    }
+}
+
+void SqliteDBManager::update(const QString &oldLocation, const QString &newLocation)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE " TABLE_LOCATION " SET " TABLE_LOCATION_CITY " = '" + newLocation +"' "
+                  "WHERE " TABLE_LOCATION_CITY " LIKE '" + oldLocation + "';");
+
+    if(!query.exec()){
+        qDebug() << "error updating table '" << TABLE_LOCATION << "'";
+        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
     }
 }
 

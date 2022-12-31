@@ -60,7 +60,7 @@ void InputDataWindow::on_insertButton_clicked()
         data.setPrecipitationHours(ui->perticipationHours_SB->value());
         data.setHumidity(ui->humidity_SB->value());
 
-        if (db->insertIntoTable(TABLE_WEATHER,data))
+        if (db->insert(data))
             QMessageBox::information(this,tr("Completed"),
                                      tr("this day has been successfully inserted into the database"));
         else {
@@ -82,12 +82,8 @@ void InputDataWindow::on_location_cb_currentTextChanged(const QString &text)
 {
     if(text == "")
         ui->statusbar->showMessage("No location");
-    else{
-//        DataDB data;
-//        data.setLocation(text);
+    else
         ui->statusbar->showMessage("Current location: " + text);
-    }
-
 }
 
 
@@ -102,12 +98,27 @@ void InputDataWindow::on_addLocationButton_clicked()
 
 void InputDataWindow::newLocationRecieved(QString newLocation)
 {
-    if(db->insertIntoTable(newLocation)) {
-        ui->location_cb->addItem(newLocation);
+    if(db->insert(newLocation)) {
         emit newLocationAddedSignal(newLocation);
+        addToComboBox(newLocation);
     }
     else
         QMessageBox::critical(this,tr("Error insert"),
                               tr("Error insert of new location"));
+}
+
+void InputDataWindow::addToComboBox(QString newLocation)
+{
+    ui->location_cb->addItem(newLocation);
+}
+
+void InputDataWindow::removeFromComboBox(QString location)
+{
+    ui->location_cb->removeItem(ui->location_cb->findText(location));
+}
+
+void InputDataWindow::updateItemInComboBox(QString oldLocation, QString newLocation)
+{
+    ui->location_cb->setItemText(ui->location_cb->findText(oldLocation), newLocation);
 }
 

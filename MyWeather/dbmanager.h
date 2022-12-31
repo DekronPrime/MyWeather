@@ -14,17 +14,19 @@ public:
 
     virtual void connectToDataBase() = 0;
     virtual QSqlDatabase getDB() = 0;
-    virtual bool insertIntoTable(const QString tableName, const DataDB &data) = 0;
-    virtual bool insertIntoTable(const QString &location) = 0;
+    virtual bool insert(const DataDB &data) = 0;
+    virtual bool insert(const QString &location) = 0;
     virtual int getLocationID(const QString &location) = 0;
     virtual QStringList getAllLocations() = 0;
     virtual QSqlQueryModel* getQueryModel() = 0;
+
     virtual QSqlQuery select() const = 0;
     virtual QSqlQuery select(const QString &location) const = 0;
 
     virtual void remove(int rowId) = 0;
     virtual void remove(const QString &location) = 0;
 
+    virtual void update(const QString &oldLocation, const QString &newLocation) = 0;
 
 //    virtual DataDB * selectFromWeather(QDate date) = 0;
 //    virtual void update(const DataDB &data) = 0;

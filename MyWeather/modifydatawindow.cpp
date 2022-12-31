@@ -74,7 +74,7 @@ void ModifyDataWindow::keyPressEvent(QKeyEvent *e)
     if(e->key() == Qt::Key_Escape)
         on_returnButton_clicked();
     else if(e->key() == Qt::Key_F5)
-        model->setQuery(db->select());
+        refreshModel();
 }
 
 void ModifyDataWindow::on_returnButton_clicked()
@@ -94,14 +94,14 @@ void ModifyDataWindow::on_tableView_clicked(const QModelIndex &index)
 }
 
 
-void ModifyDataWindow::on_deleteButton_clicked()
+void ModifyDataWindow::on_removeButton_clicked()
 {
     if(ui->tableView->selectionModel()->hasSelection()){
         db->remove(rowId);
         model->setQuery(db->select());
     } else
         QMessageBox::warning(this,tr("Warning"),
-                             tr("Choose the row before deleting"));
+                             tr("Choose the row before removing"));
 }
 
 
@@ -120,6 +120,11 @@ void ModifyDataWindow::on_changeSortButton_clicked()
 
 void ModifyDataWindow::on_refreshButton_clicked()
 {
+    refreshModel();
+}
+
+void ModifyDataWindow::refreshModel()
+{
     model->setQuery(db->select());
 }
 
@@ -131,8 +136,49 @@ void ModifyDataWindow::filterLocation(QString location)
         model->setQuery(db->select(location));
 }
 
-void ModifyDataWindow::refreshComboBox(QString newLocation)
+void ModifyDataWindow::addToComboBox(QString newLocation)
 {
-   ui->location_cb->addItem(newLocation);
+    ui->location_cb->addItem(newLocation);
+}
+
+void ModifyDataWindow::removeFromComboBox(QString location)
+{
+    ui->location_cb->removeItem(ui->location_cb->findText(location));
+}
+
+void ModifyDataWindow::updateItemInComboBox(QString oldLocation, QString newLocation)
+{
+    ui->location_cb->setItemText(ui->location_cb->findText(oldLocation), newLocation);
+}
+
+void ModifyDataWindow::newLocationAddedSlot(QString newLocation)
+{
+    addToComboBox(newLocation);
+    emit newLocationAddedSignal(newLocation);
+}
+
+void ModifyDataWindow::locationRemovedSlot(QString location)
+{
+    removeFromComboBox(location);
+    emit locationRemovedSignal(location);
+}
+
+void ModifyDataWindow::locationEditedSlot(QString oldName, QString newName)
+{
+    updateItemInComboBox(oldName, newName);
+    emit locationEditedSignal(oldName, newName);
+}
+
+void ModifyDataWindow::on_editLocationButton_clicked()
+{
+    editlocation = new EditLocation;
+    editlocation->setWindowTitle("Edit Location");
+    editlocation->show();
+
+    connect(editlocation,&EditLocation::newLocationAddedSignal,this,&ModifyDataWindow::newLocationAddedSlot);
+    connect(editlocation,&EditLocation::locationRemovedSignal,this,&ModifyDataWindow::locationRemovedSlot);
+    connect(editlocation,&EditLocation::locationEditedSignal,this,&ModifyDataWindow::locationEditedSlot);
+
+    //connect(editlocation,&QWidget::close,this,&ModifyDataWindow::refreshModel);
 }
 

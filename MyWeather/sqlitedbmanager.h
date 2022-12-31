@@ -34,8 +34,8 @@ public:
 
     void connectToDataBase();
     QSqlDatabase getDB();
-    bool insertIntoTable(const QString tableName, const DataDB &data);
-    bool insertIntoTable(const QString &location);
+    bool insert(const DataDB &data);
+    bool insert(const QString &location);
     int getLocationID(const QString &location);
     QStringList getAllLocations();
     QSqlQueryModel* getQueryModel();
@@ -43,6 +43,7 @@ public:
     QSqlQuery select(const QString &location) const;
     void remove(int rowId);
     void remove(const QString &location);
+    void update(const QString &oldLocation, const QString &newLocation);
 //    DataDB * selectFromWeather(QDate date);
 //    void update(const DataDB &data);
 

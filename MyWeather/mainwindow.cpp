@@ -23,7 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->exitButton,&QPushButton::clicked,this,&QApplication::exit);
 
-    connect(inWindow,&InputDataWindow::newLocationAddedSignal,modWindow,&ModifyDataWindow::refreshComboBox);
+    connect(inWindow,&InputDataWindow::newLocationAddedSignal,modWindow,&ModifyDataWindow::addToComboBox);
+    connect(modWindow,&ModifyDataWindow::newLocationAddedSignal,inWindow,&InputDataWindow::addToComboBox);
+    connect(modWindow,&ModifyDataWindow::locationRemovedSignal,inWindow,&InputDataWindow::removeFromComboBox);
+    connect(modWindow,&ModifyDataWindow::locationEditedSignal,inWindow,&InputDataWindow::updateItemInComboBox);
 }
 
 MainWindow::~MainWindow()

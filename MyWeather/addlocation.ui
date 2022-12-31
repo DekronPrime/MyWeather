@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>AddLocation</class>
  <widget class="QDialog" name="AddLocation">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>264</height>
+    <height>268</height>
    </rect>
   </property>
   <property name="windowTitle">

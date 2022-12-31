@@ -37,9 +37,7 @@ signals:
 
 private slots:
     void on_returnButton_clicked();
-
     void cloudinessChanged();
-
     void on_insertButton_clicked();
 
     void on_location_cb_currentTextChanged(const QString &text);
@@ -47,6 +45,12 @@ private slots:
     void on_addLocationButton_clicked();
 
     void newLocationRecieved(QString newLocation);
+
+public slots:
+    void addToComboBox(QString newLocation);
+    void removeFromComboBox(QString location);
+    void updateItemInComboBox(QString oldLocation, QString newLocation);
+
 protected:
     void keyPressEvent(QKeyEvent *e) override;
 };

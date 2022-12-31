@@ -15,5 +15,7 @@
         <file>images/wind.png</file>
         <file>images/nodata.png</file>
         <file>images/location.png</file>
+        <file>images/alter_location.png</file>
+        <file>images/pencil.png</file>
     </qresource>
 </RCC>
