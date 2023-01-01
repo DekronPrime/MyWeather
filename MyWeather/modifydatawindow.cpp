@@ -65,8 +65,9 @@ void ModifyDataWindow::createUI()
     ui->tableView->setModel(proxy);
     ui->tableView->setColumnHidden(0, true);
     ui->tableView->resizeColumnsToContents();
-    ui->tableView->setColumnWidth(1,75);
+    ui->tableView->setColumnWidth(1,100);
     ui->tableView->setColumnWidth(2,75);
+    ui->tableView->setColumnWidth(4,100);
 }
 
 void ModifyDataWindow::keyPressEvent(QKeyEvent *e)

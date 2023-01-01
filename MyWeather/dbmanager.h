@@ -27,6 +27,9 @@ public:
     virtual void remove(const QString &location) = 0;
 
     virtual void update(const QString &oldLocation, const QString &newLocation) = 0;
+    virtual void update(const DataDB &data) = 0;
+
+    virtual bool alreadyExists(QDate date, const QString &location) = 0;
 
 //    virtual DataDB * selectFromWeather(QDate date) = 0;
 //    virtual void update(const DataDB &data) = 0;

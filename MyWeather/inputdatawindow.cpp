@@ -60,19 +60,27 @@ void InputDataWindow::on_insertButton_clicked()
         data.setPrecipitationHours(ui->perticipationHours_SB->value());
         data.setHumidity(ui->humidity_SB->value());
 
-        if (db->insert(data))
-            QMessageBox::information(this,tr("Completed"),
-                                     tr("this day has been successfully inserted into the database"));
+        if(!db->alreadyExists(data.getDate(),data.getLocation())) {
+            if(db->insert(data))
+                QMessageBox::information(this,tr("Completed"),
+                                         tr("This row has been successfully inserted into database"));
+            else
+                QMessageBox::critical(this,tr("Error"),
+                                      tr("Something went wrong while inserting into database"));
+        }
         else {
-            QMessageBox::question(this,tr("Error"),
-                                  tr("The database already has the row with this date\n"
+            int res = QMessageBox::question(this,tr("Error"),
+                                  tr("The row with with date and location already exists.\n"
                                      "Do you want to update this row?"),
                                   QMessageBox::Yes | QMessageBox::No,
                                   QMessageBox::Yes);
-            //int res =
 
-            //if(res == QMessageBox::Yes)
-                //db->update(data);
+            if(res == QMessageBox::Yes) {
+                db->update(data);
+                QMessageBox::information(this,tr("Completed"),
+                                         tr("Done.\nThis row was successfully updated"));
+            }
+
         }
     }
 }

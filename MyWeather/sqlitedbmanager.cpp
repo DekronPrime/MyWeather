@@ -117,12 +117,12 @@ bool SqliteDBManager::createTables()
                       " );");
 
     if(!queryLocation.exec()){
-        qDebug() << "DataBase: error of create " << TABLE_LOCATION;
+        qDebug() << "DataBase: error of create table '" << TABLE_LOCATION << "'";
         qDebug() << queryData.lastError().text();
         return false;
     }
     else if(!queryData.exec()){
-        qDebug() << "DataBase: error of create " << TABLE_WEATHER;
+        qDebug() << "DataBase: error of create table '" << TABLE_WEATHER << "'";
         qDebug() << queryData.lastError().text();
         return false;
     }
@@ -138,7 +138,7 @@ int SqliteDBManager::getLocationID(const QString &location)
     query.prepare("SELECT id FROM " TABLE_LOCATION " WHERE " TABLE_LOCATION_CITY " LIKE '" + location + "';");
 
     if(!query.exec()){
-        qDebug() << "error getting id from " << TABLE_LOCATION;
+        qDebug() << "error getting id from table '" << TABLE_LOCATION << "'";
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
     }
     else{
@@ -199,9 +199,8 @@ bool SqliteDBManager::insert(const DataDB &data)
     query.bindValue(":Humidity",            data.getHumidity());
 
     if(!query.exec()){
-        qDebug() << "error insert into " << TABLE_WEATHER;
+        qDebug() << "error insert into table '" << TABLE_WEATHER << "'";
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
-
         return false;
     } else
         return true;
@@ -215,7 +214,7 @@ bool SqliteDBManager::insert(const QString &location)
     query.bindValue(":Location", location);
 
     if(!query.exec()){
-        qDebug() << "error insert into " << TABLE_LOCATION;
+        qDebug() << "error insert into table '" << TABLE_LOCATION << "'";
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
         return false;
     } else
@@ -273,7 +272,7 @@ void SqliteDBManager::remove(int rowId) {
     query.prepare("DELETE FROM " TABLE_WEATHER " WHERE id = " + QString::number(rowId) + ";");
 
     if(!query.exec()){
-        qDebug() << "error deleting " << TABLE_WEATHER;
+        qDebug() << "error deleting from table '" << TABLE_WEATHER << "'";
         qDebug() << query.lastError().text();
         qDebug() << query.lastQuery();
         throw query.lastError().text() + " caused by: " + query.lastQuery();
@@ -282,14 +281,18 @@ void SqliteDBManager::remove(int rowId) {
 
 void SqliteDBManager::remove(const QString &location)
 {
-    QSqlQuery query;
-    query.prepare("DELETE FROM " TABLE_LOCATION " WHERE " TABLE_LOCATION_CITY " LIKE '" + location + "';");
+    QSqlQuery query1, query2;
+    query1.prepare("DELETE FROM " TABLE_LOCATION " WHERE " TABLE_LOCATION_CITY " LIKE '" + location + "';");
+    query2.prepare("DELETE FROM " TABLE_WEATHER " WHERE location_id = " + QString::number(getLocationID(location)) + ";");
 
-    if(!query.exec()){
-        qDebug() << "error deleting " << TABLE_LOCATION;
-        qDebug() << query.lastError().text();
-        qDebug() << query.lastQuery();
-        throw query.lastError().text() + " caused by: " + query.lastQuery();
+    if(!query1.exec()){
+        qDebug() << "error deleting from table '" << TABLE_LOCATION << "'";
+        qDebug() << query1.lastError().text() + " caused by: " + query1.lastQuery();
+    }
+
+    if(!query2.exec()){
+        qDebug() << "error deleting from table '" << TABLE_WEATHER << "'";
+        qDebug() << query2.lastError().text() + " caused by: " + query2.lastQuery();
     }
 }
 
@@ -304,6 +307,68 @@ void SqliteDBManager::update(const QString &oldLocation, const QString &newLocat
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
     }
 }
+
+void SqliteDBManager::update(const DataDB &data)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE " TABLE_WEATHER " SET "
+                  TABLE_WEATHER_CLOUDINESS " = '" + data.getCloudiness() + "', "
+                  TABLE_WEATHER_DAY_TEMPERATURE " = " + QString::number(data.getDayTemp()) + ", "
+                  TABLE_WEATHER_NIGHT_TEMPERATURE " = " + QString::number(data.getNightTemp()) + ", "
+                  TABLE_WEATHER_WIND_DIRECTION " = '" + data.getWindDirection() + "', "
+                  TABLE_WEATHER_DAY_WIND_POWER " = " + QString::number(data.getDayWindPower()) + ", "
+                  TABLE_WEATHER_NIGHT_WIND_POWER " = " + QString::number(data.getNightWindPower()) + ", "
+                  TABLE_WEATHER_PRECIPITATION_HOURS " = " + QString::number(data.getPrecipitationHours()) + ", "
+                  TABLE_WEATHER_HUMIDITY " = " + QString::number(data.getHumidity()) + " "
+                  "WHERE " TABLE_WEATHER_DATE " = '" + data.getDate().toString("yyyy-MM-dd") + "' AND "
+                  "location_id = " + QString::number(getLocationID(data.getLocation())) + ";");
+
+    if(!query.exec()){
+        qDebug() << "error updating table '" << TABLE_WEATHER << "'";
+        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
+    }
+}
+
+
+bool SqliteDBManager::alreadyExists(QDate date, const QString &location)
+{
+    QSqlQuery query;
+    bool result = false;
+
+    query.prepare("SELECT EXISTS( SELECT 1 FROM " TABLE_WEATHER
+                  " WHERE " TABLE_WEATHER_DATE " = (:Date) AND location_id = (:LocationID) );");
+
+    query.bindValue(":Date", date);
+    query.bindValue(":LocationID", getLocationID(location));
+
+    if(!query.exec()){
+        qDebug() << "error checking table '" << TABLE_WEATHER << "'";
+        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
+    }
+    else
+        if(query.first())
+            result = query.value(0).toBool();
+
+    return result;
+}
+
+
+//    if(!query.exec()){
+//        qDebug() << "error checking table '" << TABLE_WEATHER << "'";
+//        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
+//    } else {
+//        if(query.first()){
+//            //data = new DataDB;
+//            return true;
+//        }
+//        else {
+//            qDebug() << "Row not found";
+//        }
+//    }
+    //return false;
+
+
+
 
 //bool SqliteDBManager::insertIntoTable(const QString tableName, const DataDB &data)
 //{

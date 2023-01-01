@@ -44,6 +44,10 @@ public:
     void remove(int rowId);
     void remove(const QString &location);
     void update(const QString &oldLocation, const QString &newLocation);
+    void update(const DataDB &data);
+    bool alreadyExists(QDate date, const QString &location);
+
+
 //    DataDB * selectFromWeather(QDate date);
 //    void update(const DataDB &data);
 
