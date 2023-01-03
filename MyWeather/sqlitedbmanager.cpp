@@ -55,7 +55,6 @@ bool SqliteDBManager::openDataBase()
     db.setHostName(DATABASE_HOSTNAME);
     db.setDatabaseName(DATABASE_NAME);
     if(db.open()){
-        //db.exec("PRAGMA locking_mode = EXCLUSIVE");
         qDebug() << "Succesfully connected to database " << db.databaseName();
         return true;
     } else {
@@ -68,29 +67,6 @@ void SqliteDBManager::closeDataBase()
 {
     db.close();
 }
-
-//bool SqliteDBManager::createTables()
-//{
-//    QSqlQuery query;
-//    if(!query.exec( "CREATE TABLE " TABLE " ("
-//                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-//                    TABLE_DATE                 " DATE UNIQUE    NOT NULL,"
-//                    TABLE_CLOUDINESS           " VARCHAR(50)    NOT NULL,"
-//                    TABLE_DAY_TEMPERATURE      " INTEGER        NOT NULL,"
-//                    TABLE_NIGHT_TEMPERATURE    " INTEGER        NOT NULL,"
-//                    TABLE_WIND_DIRECTION       " VARCHAR(2)     NOT NULL,"
-//                    TABLE_DAY_WIND_POWER       " INTEGER        NOT NULL,"
-//                    TABLE_NIGHT_WIND_POWER     " INTEGER        NOT NULL,"
-//                    TABLE_PRECIPITATION_HOURS  " INTEGER        NOT NULL,"
-//                    TABLE_HUMIDITY             " INTEGER        NOT NULL"
-//                    " )"
-//                    )){
-//        qDebug() << "DataBase: error of create " << TABLE;
-//        qDebug() << query.lastError().text();
-//        return false;
-//    } else
-//        return true;
-//}
 
 bool SqliteDBManager::createTables()
 {
@@ -140,12 +116,12 @@ int SqliteDBManager::getLocationID(const QString &location)
     if(!query.exec()){
         qDebug() << "error getting id from table '" << TABLE_LOCATION << "'";
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
-    }
-    else{
+    } else {
         if(query.first())
             location_id = query.value("id").toInt();
-        else
-            qDebug() << "Data not found";
+        else {
+            //qDebug() << "Data not found";
+        }
     }
 
     return location_id;
@@ -267,6 +243,28 @@ QSqlQuery SqliteDBManager::select(const QString &location) const
     return query;
 }
 
+QSqlQuery SqliteDBManager::select(QDate date, const QString &location) const
+{
+    QSqlQuery query("SELECT "
+                    TABLE_WEATHER ".id, "
+                    TABLE_LOCATION "." TABLE_LOCATION_CITY ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_DATE ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_CLOUDINESS ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_DAY_TEMPERATURE ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_NIGHT_TEMPERATURE ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_WIND_DIRECTION ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_DAY_WIND_POWER ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_NIGHT_WIND_POWER ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_PRECIPITATION_HOURS ", "
+                    TABLE_WEATHER "." TABLE_WEATHER_HUMIDITY
+                    " FROM " TABLE_WEATHER " INNER JOIN " TABLE_LOCATION
+                    " ON (" TABLE_WEATHER ".location_id = " TABLE_LOCATION ".id)"
+                    " WHERE " TABLE_LOCATION "." TABLE_LOCATION_CITY " LIKE '" + location +
+                    "' AND " TABLE_WEATHER "." TABLE_WEATHER_DATE " > " + date.toString("yyyy-MM-dd") + " AND "
+                    TABLE_WEATHER "." TABLE_WEATHER_DATE " <= DATE('now');");
+    return query;
+}
+
 void SqliteDBManager::remove(int rowId) {
     QSqlQuery query;
     query.prepare("DELETE FROM " TABLE_WEATHER " WHERE id = " + QString::number(rowId) + ";");
@@ -352,115 +350,36 @@ bool SqliteDBManager::alreadyExists(QDate date, const QString &location)
     return result;
 }
 
+DataDB * SqliteDBManager::selectFromWeather(QDate date, const QString &location)
+{
+    QSqlQuery query;
 
-//    if(!query.exec()){
-//        qDebug() << "error checking table '" << TABLE_WEATHER << "'";
-//        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
-//    } else {
-//        if(query.first()){
-//            //data = new DataDB;
-//            return true;
-//        }
-//        else {
-//            qDebug() << "Row not found";
-//        }
-//    }
-    //return false;
+        query.prepare("SELECT * FROM " TABLE_WEATHER " WHERE " TABLE_WEATHER_DATE " = :Date"
+                      " AND location_id = :LocationID;");
+        query.bindValue(":Date", date);
+        query.bindValue(":LocationID", getLocationID(location));
 
+        DataDB *data = nullptr;
 
-
-
-//bool SqliteDBManager::insertIntoTable(const QString tableName, const DataDB &data)
-//{
-//    QSqlQuery query;
-
-//    if (tableName == TABLE){
-//        qDebug() << tableName;
-//        query.prepare("INSERT INTO " TABLE " ( " TABLE_DATE ", "
-//                      TABLE_CLOUDINESS ", "
-//                      TABLE_DAY_TEMPERATURE ", "
-//                      TABLE_NIGHT_TEMPERATURE ", "
-//                      TABLE_WIND_DIRECTION ", "
-//                      TABLE_DAY_WIND_POWER ", "
-//                      TABLE_NIGHT_WIND_POWER ", "
-//                      TABLE_PRECIPITATION_HOURS ", "
-//                      TABLE_HUMIDITY " ) "
-//                                            "VALUES (:Date, :Cloudiness, :Daytemp, :Nighttemp,"
-//                                            ":Winddirection, :Daywindpower, :Nightwindpower,"
-//                                            ":Precipitationhours, :Humidity )");
-//        query.bindValue(":Date",                data.getDate());
-//        query.bindValue(":Cloudiness",          data.getCloudiness());
-//        query.bindValue(":Daytemp",             data.getDayTemp());
-//        query.bindValue(":Nighttemp",           data.getNightTemp());
-//        query.bindValue(":Winddirection",       data.getWindDirection());
-//        query.bindValue(":Daywindpower",        data.getDayWindPower());
-//        query.bindValue(":Nightwindpower",      data.getNightWindPower());
-//        query.bindValue(":Precipitationhours",  data.getPrecipitationHours());
-//        query.bindValue(":Humidity",            data.getHumidity());
-//    }
-
-//    if(!query.exec()){
-//        qDebug() << "error insert into " << tableName;
-//        qDebug() << query.lastError().text();
-//        qDebug() << query.lastQuery();
-
-//        return false;
-//    } else
-//        return true;
-//}
-
-//DataDB * SqliteDBManager::selectFromWeather(QDate date)
-//{
-//    QSqlQuery query;
-
-//        query.prepare("SELECT * FROM " TABLE " WHERE " TABLE_DATE " = :date;");
-//        query.bindValue(":date", date);
-
-//        DataDB *data = nullptr;
-
-//        if (!query.exec()) {
-//            qDebug() << "Query failed!";
-//            qDebug() << query.lastError().text();
-//            qDebug() << query.lastQuery();
-//            throw (QString)"Error occured while proceeding query: " + query.lastError().text() + " \nQuery: " + query.lastQuery();
-//        } else {
-//            if (query.first()) {
-//                data = new DataDB;
-//                data->setDate(query.value("Date").toDate());
-//                data->setCloudiness(query.value("Cloudiness").toString());
-//                data->setDayTemp(query.value("Day_Temp").toInt());
-//                data->setNightTemp(query.value("Night_Temp").toInt());
-//                data->setWindDirection(query.value("Wind_Direction").toString());
-//                data->setDayWindPower(query.value("Day_Wind_Power").toInt());
-//                data->setNightWindPower(query.value("Night_Wind_Power").toInt());
-//                data->setPrecipitationHours(query.value("Precipitation_Hours").toInt());
-//                data->setHumidity(query.value("Humidity").toInt());
-//            } else {
-//                //qDebug () << "Data not found";
-//            }
-//        }
-//        return data;
-//}
-
-//void SqliteDBManager::update(const DataDB &data){
-//    QSqlQuery query;
-
-//    query.prepare("UPDATE  " TABLE
-//                  " SET " TABLE_CLOUDINESS " = '" + data.getCloudiness() + "', "
-//                  " " TABLE_DAY_TEMPERATURE " = " + QString::number(data.getDayTemp()) + ", "
-//                  " " TABLE_NIGHT_TEMPERATURE " = " + QString::number(data.getNightTemp()) + ", "
-//                  " " TABLE_WIND_DIRECTION " = '" + data.getWindDirection() + "', "
-//                  " " TABLE_DAY_WIND_POWER " = " + QString::number(data.getDayWindPower()) + ", "
-//                  " " TABLE_NIGHT_WIND_POWER " = " + QString::number(data.getNightWindPower()) + ", "
-//                  " " TABLE_PRECIPITATION_HOURS " = " + QString::number(data.getPrecipitationHours()) + ", "
-//                  " " TABLE_HUMIDITY " = " + QString::number(data.getHumidity()) + " "
-//                  " WHERE date = '" + data.getDate().toString("yyyy-MM-dd") + "';");
-
-//    if(!query.exec()){
-//        qDebug() << "error updating " << TABLE;
-//        qDebug() << query.lastError().text();
-//        qDebug() << query.lastQuery();
-//        throw query.lastError().text() + " caused by: " + query.lastQuery();
-//    }
-
-//}
+        if (!query.exec()) {
+            qDebug() << "Query failed!";
+            qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
+        } else {
+            if (query.first()) {
+                data = new DataDB;
+                data->setDate(query.value("date").toDate());
+                data->setLocation(location);
+                data->setCloudiness(query.value("cloudiness").toString());
+                data->setDayTemp(query.value("day_temp").toInt());
+                data->setNightTemp(query.value("night_temp").toInt());
+                data->setWindDirection(query.value("wind_direction").toString());
+                data->setDayWindPower(query.value("day_wind_power").toInt());
+                data->setNightWindPower(query.value("night_wind_power").toInt());
+                data->setPrecipitationHours(query.value("precipitation_hours").toInt());
+                data->setHumidity(query.value("humidity").toInt());
+            } else {
+                //qDebug () << "Data not found";
+            }
+        }
+        return data;
+}

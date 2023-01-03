@@ -8,20 +8,20 @@ InputDataWindow::InputDataWindow(QWidget *parent) :
     ui->setupUi(this);
 
     db = SqliteDBManager::getInstance();
-
     changeimg->setImages(ui->temperature_img,ui->compass_img,ui->wind_img,ui->perticipation_img,ui->humidity_img);
-
-    connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
-
     ui->dateEdit->setDate(QDate::currentDate());
-
-    QStringList locations = db->getAllLocations();
-    ui->location_cb->insertItems(1,locations);
+    this->setupComboBox();
+    connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
 }
 
 InputDataWindow::~InputDataWindow()
 {
     delete ui;
+}
+
+void InputDataWindow::setupComboBox()
+{
+    refcb->insertLocations(db, ui->location_cb, 1);
 }
 
 void InputDataWindow::on_returnButton_clicked()
@@ -85,7 +85,6 @@ void InputDataWindow::on_insertButton_clicked()
     }
 }
 
-
 void InputDataWindow::on_location_cb_currentTextChanged(const QString &text)
 {
     if(text == "")
@@ -93,7 +92,6 @@ void InputDataWindow::on_location_cb_currentTextChanged(const QString &text)
     else
         ui->statusbar->showMessage("Current location: " + text);
 }
-
 
 void InputDataWindow::on_addLocationButton_clicked()
 {
@@ -108,25 +106,24 @@ void InputDataWindow::newLocationRecieved(QString newLocation)
 {
     if(db->insert(newLocation)) {
         emit newLocationAddedSignal(newLocation);
-        addToComboBox(newLocation);
+        newLocationAddedSlot(newLocation);
     }
     else
         QMessageBox::critical(this,tr("Error insert"),
                               tr("Error insert of new location"));
 }
 
-void InputDataWindow::addToComboBox(QString newLocation)
+void InputDataWindow::newLocationAddedSlot(QString newLocation)
 {
-    ui->location_cb->addItem(newLocation);
+    refcb->addToComboBox(ui->location_cb, newLocation);
 }
 
-void InputDataWindow::removeFromComboBox(QString location)
+void InputDataWindow::locationRemovedSlot(QString location)
 {
-    ui->location_cb->removeItem(ui->location_cb->findText(location));
+    refcb->removeFromComboBox(ui->location_cb, location);
 }
 
-void InputDataWindow::updateItemInComboBox(QString oldLocation, QString newLocation)
+void InputDataWindow::locationEditedSlot(QString oldName, QString newName)
 {
-    ui->location_cb->setItemText(ui->location_cb->findText(oldLocation), newLocation);
+    refcb->updateItemInComboBox(ui->location_cb, oldName, newName);
 }
-

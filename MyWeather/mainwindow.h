@@ -8,6 +8,7 @@
 #include "inputdatawindow.h"
 #include "showdatawindow.h"
 #include "modifydatawindow.h"
+#include "exitwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,13 +27,14 @@ private:
     InputDataWindow *inWindow;
     ShowDataWindow *shWindow;
     ModifyDataWindow *modWindow;
+    ExitWindow *exitWindow;
 
 private slots:
     void ReturnToMainMenu();
-
     void on_inputButton_clicked();
     void on_showButton_clicked();
     void on_deleteRowButton_clicked();
+    void on_exitButton_clicked();
 };
 
 

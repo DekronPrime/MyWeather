@@ -2,6 +2,7 @@
 #define ADDLOCATION_H
 
 #include <QDialog>
+#include "changeimage.h"
 
 namespace Ui {
 class AddLocation;
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::AddLocation *ui;
+    ChangeImage *changeimage;
 
 signals:
     void newLocationSignal(QString newLocation);

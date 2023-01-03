@@ -6,6 +6,8 @@ AddLocation::AddLocation(QWidget *parent) :
     ui(new Ui::AddLocation)
 {
     ui->setupUi(this);
+
+    changeimage->setAddLocationImage(ui->addLocation_img);
 }
 
 AddLocation::~AddLocation()
@@ -18,10 +20,8 @@ void AddLocation::on_buttonBox_rejected()
     this->close();
 }
 
-
 void AddLocation::on_buttonBox_accepted()
 {
     emit newLocationSignal(ui->lineEdit->text());
     this->close();
 }
-

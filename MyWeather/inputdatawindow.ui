@@ -69,6 +69,12 @@
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::DaySection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>dd.MM.yyyy</string>
+        </property>
         <property name="date">
          <date>
           <year>2022</year>
@@ -126,6 +132,9 @@
         </property>
         <property name="insertPolicy">
          <enum>QComboBox::InsertAlphabetically</enum>
+        </property>
+        <property name="duplicatesEnabled">
+         <bool>false</bool>
         </property>
         <item>
          <property name="text">

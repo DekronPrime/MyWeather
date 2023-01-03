@@ -39,3 +39,20 @@ void ChangeImage::setErrorImage(QLabel *noData_img)
 {
     noData_img->setPixmap(QPixmap(":/img/images/nodata.png"));
 }
+
+void ChangeImage::setAddLocationImage(QLabel *addLocation_lbl)
+{
+    addLocation_lbl->setPixmap(QPixmap(":/img/images/location.png"));
+}
+
+void ChangeImage::setEditLocationImage(QLabel *edit_lbl, QLabel *result_lbl)
+{
+    edit_lbl->setPixmap(QPixmap(":/img/images/pencil.png"));
+    result_lbl->setPixmap(QPixmap(":/img/images/alter_location.png"));
+}
+
+void ChangeImage::setExitImages(QLabel *question_lbl, QLabel *exit_lbl)
+{
+    question_lbl->setPixmap(QPixmap(":/img/images/question.png"));
+    exit_lbl->setPixmap(QPixmap(":/img/images/exit.png"));
+}

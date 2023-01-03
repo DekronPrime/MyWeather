@@ -3,12 +3,10 @@
 
 #include <QDate>
 
-
 class DataDB
 {
 private:
     QString location;
-
     QDate date;
     QString cloudiness;
     int day_temp;
@@ -23,7 +21,6 @@ public:
     DataDB();
 
     void setLocation(const QString &location);
-
     void setDate(const QDate &date);
     void setCloudiness(const QString &cloudiness);
     void setDayTemp(const int &day_temp);
@@ -35,7 +32,6 @@ public:
     void setHumidity(const int &humidity);
 
     QString getLocation() const;
-
     QDate getDate() const;
     QString getCloudiness() const;
     int getDayTemp() const;

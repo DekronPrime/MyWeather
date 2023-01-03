@@ -7,8 +7,8 @@
 #include "sortorder.h"
 #include "sqlitedbmanager.h"
 #include "editlocation.h"
+#include "refreshcombobox.h"
 
-#include <QSqlTableModel>
 #include <QSqlQueryModel>
 #include <QSortFilterProxyModel>
 #include <QKeyEvent>
@@ -33,13 +33,14 @@ private:
     QSortFilterProxyModel *proxy;
     SortOrder *sortorder;
     EditLocation *editlocation;
-
+    RefreshComboBox *refcb;
     int rowId;
     bool SortOrder;
 
 private:
     void setupModel(const QStringList &headers);
     void createUI();
+    void setupComboBox();
 
 protected:
     void keyPressEvent(QKeyEvent *e) override;
@@ -52,24 +53,17 @@ signals:
 
 private slots:
     void on_returnButton_clicked();
-
     void sortChanged();
     void on_tableView_clicked(const QModelIndex &index);
     void on_removeButton_clicked();
-
     void on_changeSortButton_clicked();
     void on_refreshButton_clicked();
     void refreshModel();
-
     void filterLocation(QString location);
-
     void on_editLocationButton_clicked();
 
 public slots:
     void addToComboBox(QString newLocation);
-    void removeFromComboBox(QString location);
-    void updateItemInComboBox(QString oldLocation, QString newLocation);
-
     void newLocationAddedSlot(QString newLocation);
     void locationRemovedSlot(QString location);
     void locationEditedSlot(QString oldName, QString newName);

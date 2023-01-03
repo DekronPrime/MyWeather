@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include <QIcon>
 #include <QApplication>
 #include "dbmanager.h"
 #include "sqlitedbmanager.h"

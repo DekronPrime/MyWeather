@@ -6,7 +6,6 @@
 #include <QSortFilterProxyModel>
 #include <QMessageBox>
 
-
 #include "dbmanager.h"
 #include "sqlitedbmanager.h"
 #include "sortorder.h"
@@ -29,14 +28,11 @@ public:
 private:
     Ui::ChangeLocation *ui;
     DBManager *db;
-
     QSqlTableModel *model;
     QSortFilterProxyModel *proxy;
-
     AddLocation *addlocation;
     AlterLocation *alterlocation;
     SortOrder *sortorder;
-
     QString location;
 
 private:
@@ -51,13 +47,11 @@ signals:
 private slots:
     void sortOrderChanged(const QString &text);
     void on_addButton_clicked();
-
     void newLocationRecieved(QString newLocation);
     void on_tableView_clicked(const QModelIndex &index);
     void on_removeButton_clicked();
     void on_editbutton_clicked();
     void on_cancelButton_clicked();
-
     void locationRenamedSlot(QString renamedLocation);
 };
 

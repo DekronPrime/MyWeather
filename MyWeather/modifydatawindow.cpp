@@ -33,9 +33,7 @@ ModifyDataWindow::ModifyDataWindow(QWidget *parent) :
 
     ui->sort_CB->setCurrentIndex(1);
 
-    QStringList locations = db->getAllLocations();
-    ui->location_cb->insertSeparator(1);
-    ui->location_cb->insertItems(2,locations);
+    this->setupComboBox();
 }
 
 ModifyDataWindow::~ModifyDataWindow()
@@ -45,16 +43,11 @@ ModifyDataWindow::~ModifyDataWindow()
 
 void ModifyDataWindow::setupModel(const QStringList &headers)
 {
-    //model = new QSqlTableModel(this, db->getDB());
     model = db->getQueryModel();
-    //model->setTable(tableName);
-
 
     for(int i = 0, j = 0; i < model->columnCount(); i++, j++){
         model->setHeaderData(i,Qt::Horizontal,headers[j]);
     }
-
-    //model->setSort(1,Qt::AscendingOrder);
 }
 
 void ModifyDataWindow::createUI()
@@ -68,6 +61,12 @@ void ModifyDataWindow::createUI()
     ui->tableView->setColumnWidth(1,100);
     ui->tableView->setColumnWidth(2,75);
     ui->tableView->setColumnWidth(4,100);
+}
+
+void ModifyDataWindow::setupComboBox()
+{
+    ui->location_cb->insertSeparator(1);
+    refcb->insertLocations(db, ui->location_cb, 2);
 }
 
 void ModifyDataWindow::keyPressEvent(QKeyEvent *e)
@@ -139,17 +138,7 @@ void ModifyDataWindow::filterLocation(QString location)
 
 void ModifyDataWindow::addToComboBox(QString newLocation)
 {
-    ui->location_cb->addItem(newLocation);
-}
-
-void ModifyDataWindow::removeFromComboBox(QString location)
-{
-    ui->location_cb->removeItem(ui->location_cb->findText(location));
-}
-
-void ModifyDataWindow::updateItemInComboBox(QString oldLocation, QString newLocation)
-{
-    ui->location_cb->setItemText(ui->location_cb->findText(oldLocation), newLocation);
+    refcb->addToComboBox(ui->location_cb, newLocation);
 }
 
 void ModifyDataWindow::newLocationAddedSlot(QString newLocation)
@@ -160,13 +149,13 @@ void ModifyDataWindow::newLocationAddedSlot(QString newLocation)
 
 void ModifyDataWindow::locationRemovedSlot(QString location)
 {
-    removeFromComboBox(location);
+    refcb->removeFromComboBox(ui->location_cb, location);
     emit locationRemovedSignal(location);
 }
 
 void ModifyDataWindow::locationEditedSlot(QString oldName, QString newName)
 {
-    updateItemInComboBox(oldName, newName);
+    refcb->updateItemInComboBox(ui->location_cb, oldName, newName);
     emit locationEditedSignal(oldName, newName);
 }
 

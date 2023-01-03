@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_exitform.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,12 +22,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(shWindow,&ShowDataWindow::signalfromShWindow,this,&MainWindow::ReturnToMainMenu);
     connect(modWindow,&ModifyDataWindow::signalfromDelWindow,this,&MainWindow::ReturnToMainMenu);
 
-    connect(ui->exitButton,&QPushButton::clicked,this,&QApplication::exit);
-
     connect(inWindow,&InputDataWindow::newLocationAddedSignal,modWindow,&ModifyDataWindow::addToComboBox);
-    connect(modWindow,&ModifyDataWindow::newLocationAddedSignal,inWindow,&InputDataWindow::addToComboBox);
-    connect(modWindow,&ModifyDataWindow::locationRemovedSignal,inWindow,&InputDataWindow::removeFromComboBox);
-    connect(modWindow,&ModifyDataWindow::locationEditedSignal,inWindow,&InputDataWindow::updateItemInComboBox);
+    connect(inWindow,&InputDataWindow::newLocationAddedSignal,shWindow,&ShowDataWindow::newLocationAddedSlot);
+
+    connect(modWindow,&ModifyDataWindow::newLocationAddedSignal,inWindow,&InputDataWindow::newLocationAddedSlot);
+    connect(modWindow,&ModifyDataWindow::locationRemovedSignal,inWindow,&InputDataWindow::locationRemovedSlot);
+    connect(modWindow,&ModifyDataWindow::locationEditedSignal,inWindow,&InputDataWindow::locationEditedSlot);
+
+    connect(modWindow,&ModifyDataWindow::newLocationAddedSignal,shWindow,&ShowDataWindow::newLocationAddedSlot);
+    connect(modWindow,&ModifyDataWindow::locationRemovedSignal,shWindow,&ShowDataWindow::locationRemovedSlot);
+    connect(modWindow,&ModifyDataWindow::locationEditedSignal,shWindow,&ShowDataWindow::locationEditedSlot);
 }
 
 MainWindow::~MainWindow()
@@ -61,5 +66,13 @@ void MainWindow::on_deleteRowButton_clicked()
 {
     modWindow->show();
     this->hide();
+}
+
+
+void MainWindow::on_exitButton_clicked()
+{
+    exitWindow = new ExitWindow;
+    exitWindow->setWindowTitle("Exit");
+    exitWindow->show();
 }
 

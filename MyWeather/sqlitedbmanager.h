@@ -41,18 +41,16 @@ public:
     QSqlQueryModel* getQueryModel();
     QSqlQuery select() const;
     QSqlQuery select(const QString &location) const;
+    QSqlQuery select(QDate date, const QString &location) const;
     void remove(int rowId);
     void remove(const QString &location);
     void update(const QString &oldLocation, const QString &newLocation);
     void update(const DataDB &data);
     bool alreadyExists(QDate date, const QString &location);
-
-
-//    DataDB * selectFromWeather(QDate date);
-//    void update(const DataDB &data);
+    DataDB * selectFromWeather(QDate date, const QString &location);
 
 private:
-    QSqlDatabase    db;
+    QSqlDatabase db;
 
 private:
 

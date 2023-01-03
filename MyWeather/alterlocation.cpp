@@ -8,9 +8,15 @@ AlterLocation::AlterLocation(QString location, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->lineEdit->setText(location);
+    changeimage->setEditLocationImage(ui->pencil_img, ui->alter_location_img);
+    this->setupLineEdit();
+}
+
+void AlterLocation::setupLineEdit()
+{
+    ui->lineEdit->setText(this->chosenLocation);
     ui->lineEdit->selectAll();
-    ui->result_lbl->setText(location);
+    ui->result_lbl->setText(this->chosenLocation);
 }
 
 AlterLocation::~AlterLocation()
@@ -18,12 +24,10 @@ AlterLocation::~AlterLocation()
     delete ui;
 }
 
-
 void AlterLocation::on_cancelButton_clicked()
 {
     close();
 }
-
 
 void AlterLocation::on_submitButton_clicked()
 {
@@ -31,9 +35,7 @@ void AlterLocation::on_submitButton_clicked()
     close();
 }
 
-
 void AlterLocation::on_lineEdit_textEdited(const QString &text)
 {
     ui->result_lbl->setText(text);
 }
-

@@ -10,8 +10,6 @@ void DataDB::setLocation(const QString &location)
     this->location = location;
 }
 
-
-
 void DataDB::setDate(const QDate &date)
 {
     this->date = date;
@@ -63,8 +61,6 @@ QString DataDB::getLocation() const
 {
     return this->location;
 }
-
-
 
 QDate DataDB::getDate() const
 {

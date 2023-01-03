@@ -17,5 +17,7 @@
         <file>images/location.png</file>
         <file>images/alter_location.png</file>
         <file>images/pencil.png</file>
+        <file>images/exit.png</file>
+        <file>images/question.png</file>
     </qresource>
 </RCC>

@@ -32,4 +32,3 @@ void AnotherDay::on_buttonBox_rejected()
 {
     this->close();
 }
-

@@ -16,10 +16,12 @@ SOURCES += \
     datadb.cpp \
     dbmanager.cpp \
     editlocation.cpp \
+    exitwindow.cpp \
     inputdatawindow.cpp \
     main.cpp \
     mainwindow.cpp \
     modifydatawindow.cpp \
+    refreshcombobox.cpp \
     showdatawindow.cpp \
     sortorder.cpp \
     sqlitedbmanager.cpp
@@ -32,9 +34,11 @@ HEADERS += \
     datadb.h \
     dbmanager.h \
     editlocation.h \
+    exitwindow.h \
     inputdatawindow.h \
     mainwindow.h \
     modifydatawindow.h \
+    refreshcombobox.h \
     showdatawindow.h \
     sortorder.h \
     sqlitedbmanager.h
@@ -44,6 +48,7 @@ FORMS += \
     alterlocation.ui \
     anotherday.ui \
     editlocation.ui \
+    exitwindow.ui \
     inputdatawindow.ui \
     mainwindow.ui \
     modifydatawindow.ui \

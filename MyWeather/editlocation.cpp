@@ -17,8 +17,6 @@ EditLocation::EditLocation(QWidget *parent) :
     this->createUI();
 
     connect(ui->sort_cb,&QComboBox::currentTextChanged,this,&EditLocation::sortOrderChanged);
-
-    //connect(ui->addButton,&QPushButton::clicked,)
 }
 
 EditLocation::~EditLocation()
@@ -54,9 +52,6 @@ void EditLocation::sortOrderChanged(const QString &text)
 
 void EditLocation::on_addButton_clicked()
 {
-    //model->insertRow(model->rowCount());
-    //proxy->insertRow(proxy->rowCount());
-
     addlocation = new AddLocation;
     addlocation->setWindowTitle("Add New Location");
     addlocation->show();
@@ -75,12 +70,10 @@ void EditLocation::newLocationRecieved(QString newLocation)
                               tr("Error insert of new location"));
 }
 
-
 void EditLocation::on_tableView_clicked(const QModelIndex &index)
 {
     location = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),1)).toString();
 }
-
 
 void EditLocation::on_removeButton_clicked()
 {
@@ -92,7 +85,6 @@ void EditLocation::on_removeButton_clicked()
         QMessageBox::warning(this,tr("Warning"),
                              tr("Choose the row before removing"));
 }
-
 
 void EditLocation::on_editbutton_clicked()
 {
@@ -107,7 +99,6 @@ void EditLocation::on_editbutton_clicked()
                              tr("Choose the row before editing"));
 }
 
-
 void EditLocation::on_cancelButton_clicked()
 {
     close();
@@ -119,4 +110,3 @@ void EditLocation::locationRenamedSlot(QString renamedLocation)
     model->select();
     emit locationEditedSignal(location,renamedLocation);
 }
-

@@ -22,9 +22,7 @@ signals:
 
 private slots:
     void selectedDateChanged();
-
     void on_buttonBox_accepted();
-
     void on_buttonBox_rejected();
 
 private:

@@ -12,6 +12,7 @@
 #include "sqlitedbmanager.h"
 #include "changeimage.h"
 #include "addlocation.h"
+#include "refreshcombobox.h"
 
 namespace Ui {
 class InputWindow;
@@ -30,6 +31,10 @@ private:
     DBManager *db;
     ChangeImage *changeimg;
     AddLocation *addLocation;
+    RefreshComboBox *refcb;
+
+private:
+    void setupComboBox();
 
 signals:
     void signalfromInWindow();
@@ -39,17 +44,14 @@ private slots:
     void on_returnButton_clicked();
     void cloudinessChanged();
     void on_insertButton_clicked();
-
     void on_location_cb_currentTextChanged(const QString &text);
-
     void on_addLocationButton_clicked();
-
     void newLocationRecieved(QString newLocation);
 
 public slots:
-    void addToComboBox(QString newLocation);
-    void removeFromComboBox(QString location);
-    void updateItemInComboBox(QString oldLocation, QString newLocation);
+    void newLocationAddedSlot(QString newLocation);
+    void locationRemovedSlot(QString location);
+    void locationEditedSlot(QString oldName, QString newName);
 
 protected:
     void keyPressEvent(QKeyEvent *e) override;

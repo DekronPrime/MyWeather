@@ -10,9 +10,9 @@ class SortOrder
 {
 public:
     SortOrder();
+
     void sortChanged(QSortFilterProxyModel *proxy, int column, bool sortButton);
     void sortChanged(QSqlTableModel *model, int column, QString sortOrder);
-
 };
 
 #endif // SORTORDER_H
