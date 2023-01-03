@@ -90,7 +90,7 @@ bool SqliteDBManager::createTables()
                       TABLE_WEATHER_PRECIPITATION_HOURS  " INTEGER        NOT NULL,"
                       TABLE_WEATHER_HUMIDITY             " INTEGER        NOT NULL,"
                       "FOREIGN KEY(location_id) REFERENCES " TABLE_LOCATION "(id) ON UPDATE CASCADE ON DELETE CASCADE "
-                      " );");
+                      ");");
 
     if(!queryLocation.exec()){
         qDebug() << "DataBase: error of create table '" << TABLE_LOCATION << "'";
@@ -102,7 +102,6 @@ bool SqliteDBManager::createTables()
         qDebug() << queryData.lastError().text();
         return false;
     }
-
     return true;
 }
 
@@ -185,6 +184,7 @@ bool SqliteDBManager::insert(const DataDB &data)
 bool SqliteDBManager::insert(const QString &location)
 {
     QSqlQuery query;
+
     query.prepare("INSERT INTO " TABLE_LOCATION " ( " TABLE_LOCATION_CITY " ) "
                                                                           "VALUES (:Location)");
     query.bindValue(":Location", location);
@@ -265,8 +265,10 @@ QSqlQuery SqliteDBManager::select(QDate date, const QString &location) const
     return query;
 }
 
-void SqliteDBManager::remove(int rowId) {
+void SqliteDBManager::remove(int rowId)
+{
     QSqlQuery query;
+
     query.prepare("DELETE FROM " TABLE_WEATHER " WHERE id = " + QString::number(rowId) + ";");
 
     if(!query.exec()){
@@ -280,6 +282,7 @@ void SqliteDBManager::remove(int rowId) {
 void SqliteDBManager::remove(const QString &location)
 {
     QSqlQuery query1, query2;
+
     query1.prepare("DELETE FROM " TABLE_LOCATION " WHERE " TABLE_LOCATION_CITY " LIKE '" + location + "';");
     query2.prepare("DELETE FROM " TABLE_WEATHER " WHERE location_id = " + QString::number(getLocationID(location)) + ";");
 
@@ -297,6 +300,7 @@ void SqliteDBManager::remove(const QString &location)
 void SqliteDBManager::update(const QString &oldLocation, const QString &newLocation)
 {
     QSqlQuery query;
+
     query.prepare("UPDATE " TABLE_LOCATION " SET " TABLE_LOCATION_CITY " = '" + newLocation +"' "
                   "WHERE " TABLE_LOCATION_CITY " LIKE '" + oldLocation + "';");
 
@@ -309,6 +313,7 @@ void SqliteDBManager::update(const QString &oldLocation, const QString &newLocat
 void SqliteDBManager::update(const DataDB &data)
 {
     QSqlQuery query;
+
     query.prepare("UPDATE " TABLE_WEATHER " SET "
                   TABLE_WEATHER_CLOUDINESS " = '" + data.getCloudiness() + "', "
                   TABLE_WEATHER_DAY_TEMPERATURE " = " + QString::number(data.getDayTemp()) + ", "

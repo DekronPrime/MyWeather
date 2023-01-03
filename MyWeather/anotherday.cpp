@@ -25,10 +25,10 @@ void AnotherDay::selectedDateChanged()
 void AnotherDay::on_buttonBox_accepted()
 {
     emit signalADaccepted(ui->calendarWidget->selectedDate());
-    this->close();
+    delete this;
 }
 
 void AnotherDay::on_buttonBox_rejected()
 {
-    this->close();
+    delete this;
 }

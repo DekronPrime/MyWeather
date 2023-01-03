@@ -16,6 +16,7 @@
 #include "sortorder.h"
 #include "changeimage.h"
 #include "refreshcombobox.h"
+#include "qsqlquery.h"
 
 namespace Ui {
 class ShowWindow;
@@ -65,18 +66,16 @@ private slots:
     void sortChanged();
     void on_changeSortButton_clicked();
     void on_refreshButton_clicked();
-    void refreshData();
     void on_location_cb_currentTextChanged(const QString &location);
 
 public slots:
     void newLocationAddedSlot(QString newLocation);
     void locationRemovedSlot(QString location);
     void locationEditedSlot(QString oldName, QString newName);
+    void refreshData();
 
 protected:
     void keyPressEvent(QKeyEvent *e) override;
 };
-
-
 
 #endif // SHOWDATAWINDOW_H

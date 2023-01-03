@@ -8,6 +8,7 @@
 #include "sqlitedbmanager.h"
 #include "editlocation.h"
 #include "refreshcombobox.h"
+#include "qsqlquery.h"
 
 #include <QSqlQueryModel>
 #include <QSortFilterProxyModel>
@@ -58,7 +59,6 @@ private slots:
     void on_removeButton_clicked();
     void on_changeSortButton_clicked();
     void on_refreshButton_clicked();
-    void refreshModel();
     void filterLocation(QString location);
     void on_editLocationButton_clicked();
 
@@ -67,6 +67,8 @@ public slots:
     void newLocationAddedSlot(QString newLocation);
     void locationRemovedSlot(QString location);
     void locationEditedSlot(QString oldName, QString newName);
+    void refreshModel();
+
 };
 
 #endif // MODIFYDATAWINDOW_H

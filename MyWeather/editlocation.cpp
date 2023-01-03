@@ -52,7 +52,7 @@ void EditLocation::sortOrderChanged(const QString &text)
 
 void EditLocation::on_addButton_clicked()
 {
-    addlocation = new AddLocation;
+    addlocation = new AddLocation(this);
     addlocation->setWindowTitle("Add New Location");
     addlocation->show();
 
@@ -67,7 +67,7 @@ void EditLocation::newLocationRecieved(QString newLocation)
     }
     else
         QMessageBox::critical(this,tr("Error insert"),
-                              tr("Error insert of new location"));
+                              tr("This location is already exists"));
 }
 
 void EditLocation::on_tableView_clicked(const QModelIndex &index)
@@ -101,7 +101,7 @@ void EditLocation::on_editbutton_clicked()
 
 void EditLocation::on_cancelButton_clicked()
 {
-    close();
+    delete this;
 }
 
 void EditLocation::locationRenamedSlot(QString renamedLocation)

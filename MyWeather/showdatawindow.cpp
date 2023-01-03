@@ -1,5 +1,4 @@
 #include "showdatawindow.h"
-#include "qsqlquery.h"
 #include "ui_showdatawindow.h"
 
 
@@ -10,11 +9,6 @@ ShowDataWindow::ShowDataWindow(QWidget *parent) :
     ui->setupUi(this);
 
     db = SqliteDBManager::getInstance();
-
-    adform = new AnotherDay;
-    adform->setWindowTitle("Choose another day");
-
-    connect(adform,&AnotherDay::signalADaccepted,this,&ShowDataWindow::adFormAccepted);
 
     changeimg->setErrorImage(ui->nodata_img);
     changeimg->setImages(ui->temp_img,ui->direction_img,ui->wind_img,ui->fallout_img,ui->humidity_img);
@@ -106,14 +100,12 @@ void ShowDataWindow::on_todayButton_clicked()
     printData(this->getDate());
 }
 
-
 void ShowDataWindow::on_yesterdayButton_clicked()
 {
     ui->stackedWidget->setCurrentIndex(1);
     this->setDate(QDate::currentDate().addDays(-1));
     printData(this->getDate());
 }
-
 
 void ShowDataWindow::on_tendaysButton_clicked()
 {
@@ -124,7 +116,11 @@ void ShowDataWindow::on_tendaysButton_clicked()
 
 void ShowDataWindow::on_anotherButton_clicked()
 {
+    adform = new AnotherDay(this);
+    adform->setWindowTitle("Choose another day");
     adform->show();
+
+    connect(adform,&AnotherDay::signalADaccepted,this,&ShowDataWindow::adFormAccepted);
 }
 
 void ShowDataWindow::adFormAccepted(QDate date)
@@ -197,7 +193,6 @@ void ShowDataWindow::keyPressEvent(QKeyEvent *e)
     else if(e->key() == Qt::Key_F5){
         on_refreshButton_clicked();
     }
-
 }
 
 void ShowDataWindow::on_changeSortButton_clicked()

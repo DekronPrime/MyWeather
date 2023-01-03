@@ -17,7 +17,7 @@ ExitWindow::~ExitWindow()
 
 void ExitWindow::on_noButton_clicked()
 {
-    this->close();
+    delete this;
 }
 
 void ExitWindow::on_yesButton_clicked()

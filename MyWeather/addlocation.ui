@@ -182,6 +182,9 @@
          <pointsize>14</pointsize>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

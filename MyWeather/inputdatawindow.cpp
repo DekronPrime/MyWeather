@@ -12,6 +12,7 @@ InputDataWindow::InputDataWindow(QWidget *parent) :
     ui->dateEdit->setDate(QDate::currentDate());
     this->setupComboBox();
     connect(ui->cloudiness_CB,&QComboBox::currentIndexChanged,this,&InputDataWindow::cloudinessChanged);
+    ui->statusbar->showMessage("No location");
 }
 
 InputDataWindow::~InputDataWindow()

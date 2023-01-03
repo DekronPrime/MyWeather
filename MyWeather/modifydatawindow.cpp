@@ -1,5 +1,4 @@
 #include "modifydatawindow.h"
-#include "qsqlquery.h"
 #include "ui_modifydatawindow.h"
 
 ModifyDataWindow::ModifyDataWindow(QWidget *parent) :
@@ -87,12 +86,10 @@ void ModifyDataWindow::sortChanged()
     sortorder->sortChanged(proxy,ui->sort_CB->currentIndex() + 1,SortOrder);
 }
 
-
 void ModifyDataWindow::on_tableView_clicked(const QModelIndex &index)
 {
      rowId = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toInt();
 }
-
 
 void ModifyDataWindow::on_removeButton_clicked()
 {
@@ -103,7 +100,6 @@ void ModifyDataWindow::on_removeButton_clicked()
         QMessageBox::warning(this,tr("Warning"),
                              tr("Choose the row before removing"));
 }
-
 
 void ModifyDataWindow::on_changeSortButton_clicked()
 {
@@ -169,6 +165,5 @@ void ModifyDataWindow::on_editLocationButton_clicked()
     connect(editlocation,&EditLocation::locationRemovedSignal,this,&ModifyDataWindow::locationRemovedSlot);
     connect(editlocation,&EditLocation::locationEditedSignal,this,&ModifyDataWindow::locationEditedSlot);
 
-    //connect(editlocation,&QWidget::close,this,&ModifyDataWindow::refreshModel);
+    connect(editlocation,&QWidget::destroyed,this,&ModifyDataWindow::refreshModel);
 }
-

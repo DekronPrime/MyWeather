@@ -17,7 +17,7 @@ AddLocation::~AddLocation()
 
 void AddLocation::on_buttonBox_rejected()
 {
-    this->close();
+    delete this;
 }
 
 void AddLocation::on_buttonBox_accepted()

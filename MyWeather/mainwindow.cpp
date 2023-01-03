@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ui_exitform.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(inWindow,&InputDataWindow::signalfromInWindow,this,&MainWindow::ReturnToMainMenu);
     connect(shWindow,&ShowDataWindow::signalfromShWindow,this,&MainWindow::ReturnToMainMenu);
     connect(modWindow,&ModifyDataWindow::signalfromDelWindow,this,&MainWindow::ReturnToMainMenu);
+
+    connect(ui->modifyDataButton,&QPushButton::clicked,modWindow,&ModifyDataWindow::refreshModel);
+    connect(ui->showDataButton,&QPushButton::clicked,shWindow,&ShowDataWindow::refreshData);
 
     connect(inWindow,&InputDataWindow::newLocationAddedSignal,modWindow,&ModifyDataWindow::addToComboBox);
     connect(inWindow,&InputDataWindow::newLocationAddedSignal,shWindow,&ShowDataWindow::newLocationAddedSlot);
@@ -47,27 +49,23 @@ void MainWindow::ReturnToMainMenu()
     this->show();
 }
 
-
-void MainWindow::on_inputButton_clicked()
+void MainWindow::on_inputDataButton_clicked()
 {
     inWindow->show();
     this->hide();
 }
 
-
-void MainWindow::on_showButton_clicked()
+void MainWindow::on_showDataButton_clicked()
 {
     shWindow->show();
     this->hide();
 }
 
-
-void MainWindow::on_deleteRowButton_clicked()
+void MainWindow::on_modifyDataButton_clicked()
 {
     modWindow->show();
     this->hide();
 }
-
 
 void MainWindow::on_exitButton_clicked()
 {
@@ -75,4 +73,3 @@ void MainWindow::on_exitButton_clicked()
     exitWindow->setWindowTitle("Exit");
     exitWindow->show();
 }
-

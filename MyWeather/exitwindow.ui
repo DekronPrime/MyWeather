@@ -32,6 +32,9 @@
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="text">
       <string>Are you sure want to exit MyWeather?</string>
      </property>

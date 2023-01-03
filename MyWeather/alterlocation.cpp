@@ -26,7 +26,7 @@ AlterLocation::~AlterLocation()
 
 void AlterLocation::on_cancelButton_clicked()
 {
-    close();
+    delete this;
 }
 
 void AlterLocation::on_submitButton_clicked()

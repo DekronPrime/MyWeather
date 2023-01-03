@@ -31,9 +31,9 @@ private:
 
 private slots:
     void ReturnToMainMenu();
-    void on_inputButton_clicked();
-    void on_showButton_clicked();
-    void on_deleteRowButton_clicked();
+    void on_inputDataButton_clicked();
+    void on_showDataButton_clicked();
+    void on_modifyDataButton_clicked();
     void on_exitButton_clicked();
 };
 
