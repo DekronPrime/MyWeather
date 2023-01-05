@@ -4,13 +4,13 @@
 #include <QSqlDatabase>
 #include <QSqlQueryModel>
 
-
 #include "datadb.h"
 
 class DBManager
 {
 public:
     DBManager();
+    virtual ~DBManager();
 
     virtual void connectToDataBase() = 0;
     virtual QSqlDatabase getDB() = 0;
@@ -27,6 +27,7 @@ public:
     virtual void update(const QString &oldLocation, const QString &newLocation) = 0;
     virtual void update(const DataDB &data) = 0;
     virtual bool alreadyExists(QDate date, const QString &location) = 0;
+    virtual bool alreadyExists(const QString &location) = 0;
     virtual DataDB * selectFromWeather(QDate date, const QString &location) = 0;
 };
 

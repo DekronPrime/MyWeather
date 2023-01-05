@@ -32,22 +32,23 @@ class SqliteDBManager : public DBManager {
 public:
     static SqliteDBManager* getInstance();
 
-    void connectToDataBase();
-    QSqlDatabase getDB();
-    bool insert(const DataDB &data);
-    bool insert(const QString &location);
-    int getLocationID(const QString &location);
-    QStringList getAllLocations();
-    QSqlQueryModel* getQueryModel();
-    QSqlQuery select() const;
-    QSqlQuery select(const QString &location) const;
-    QSqlQuery select(QDate date, const QString &location) const;
-    void remove(int rowId);
-    void remove(const QString &location);
-    void update(const QString &oldLocation, const QString &newLocation);
-    void update(const DataDB &data);
-    bool alreadyExists(QDate date, const QString &location);
-    DataDB * selectFromWeather(QDate date, const QString &location);
+    void connectToDataBase() override;
+    QSqlDatabase getDB() override;
+    bool insert(const DataDB &data) override;
+    bool insert(const QString &location) override;
+    int getLocationID(const QString &location) override;
+    QStringList getAllLocations() override;
+    QSqlQueryModel* getQueryModel() override;
+    QSqlQuery select() const override;
+    QSqlQuery select(const QString &location) const override;
+    QSqlQuery select(QDate date, const QString &location) const override;
+    void remove(int rowId) override;
+    void remove(const QString &location) override;
+    void update(const QString &oldLocation, const QString &newLocation) override;
+    void update(const DataDB &data) override;
+    bool alreadyExists(QDate date, const QString &location) override;
+    bool alreadyExists(const QString &location) override;
+    DataDB * selectFromWeather(QDate date, const QString &location) override;
 
 private:
     QSqlDatabase db;
@@ -57,6 +58,7 @@ private:
     static SqliteDBManager* instance;
 
     SqliteDBManager();
+    ~SqliteDBManager() override;
 
     bool openDataBase();
     bool restoreDataBase();

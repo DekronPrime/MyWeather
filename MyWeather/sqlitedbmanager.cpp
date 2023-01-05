@@ -13,6 +13,12 @@ SqliteDBManager::SqliteDBManager(){
 
 }
 
+SqliteDBManager::~SqliteDBManager()
+{
+    this->closeDataBase();
+    delete instance;
+}
+
 SqliteDBManager* SqliteDBManager::getInstance()
 {
     if(instance == nullptr){
@@ -346,6 +352,27 @@ bool SqliteDBManager::alreadyExists(QDate date, const QString &location)
 
     if(!query.exec()){
         qDebug() << "error checking table '" << TABLE_WEATHER << "'";
+        qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
+    }
+    else
+        if(query.first())
+            result = query.value(0).toBool();
+
+    return result;
+}
+
+bool SqliteDBManager::alreadyExists(const QString &location)
+{
+    QSqlQuery query;
+    bool result = false;
+
+    query.prepare("SELECT EXISTS( SELECT 1 FROM " TABLE_LOCATION
+                  " WHERE " TABLE_LOCATION_CITY " like (:Location));");
+
+    query.bindValue(":Location", location);
+
+    if(!query.exec()){
+        qDebug() << "error checking table '" << TABLE_LOCATION << "'";
         qDebug() << query.lastError().text() << "caused by: " << query.lastQuery();
     }
     else

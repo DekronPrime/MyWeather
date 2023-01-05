@@ -122,6 +122,7 @@ void ModifyDataWindow::on_refreshButton_clicked()
 void ModifyDataWindow::refreshModel()
 {
     model->setQuery(db->select());
+    filterLocation(ui->location_cb->currentText());
 }
 
 void ModifyDataWindow::filterLocation(QString location)

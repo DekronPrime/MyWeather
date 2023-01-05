@@ -4,3 +4,8 @@ DBManager::DBManager()
 {
 
 }
+
+DBManager::~DBManager()
+{
+
+}

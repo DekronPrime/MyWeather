@@ -106,7 +106,12 @@ void EditLocation::on_cancelButton_clicked()
 
 void EditLocation::locationRenamedSlot(QString renamedLocation)
 {
-    db->update(location,renamedLocation);
-    model->select();
-    emit locationEditedSignal(location,renamedLocation);
+    if(!db->alreadyExists(renamedLocation)){
+        db->update(location,renamedLocation);
+        model->select();
+        emit locationEditedSignal(location,renamedLocation);
+    }
+    else
+        QMessageBox::critical(this,tr("Error insert"),
+                              tr("This location is already exists"));
 }
