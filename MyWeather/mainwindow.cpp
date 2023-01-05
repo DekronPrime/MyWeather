@@ -41,6 +41,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+    if(e->key() == Qt::Key_Escape)
+        on_exitButton_clicked();
+}
+
 void MainWindow::ReturnToMainMenu()
 {
     inWindow->hide();

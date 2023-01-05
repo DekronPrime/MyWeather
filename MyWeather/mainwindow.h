@@ -22,6 +22,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    void keyPressEvent(QKeyEvent *e) override;
+
 private:
     Ui::MainWindow *ui;
     InputDataWindow *inWindow;
