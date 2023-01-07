@@ -16,7 +16,7 @@
 #include <QMessageBox>
 
 namespace Ui {
-class DeleteWindow;
+class ModifyWindow;
 }
 
 class ModifyDataWindow : public QMainWindow
@@ -28,7 +28,7 @@ public:
     ~ModifyDataWindow();
 
 private:
-    Ui::DeleteWindow *ui;
+    Ui::ModifyWindow *ui;
     DBManager *db;
     QSqlQueryModel *model;
     QSortFilterProxyModel *proxy;

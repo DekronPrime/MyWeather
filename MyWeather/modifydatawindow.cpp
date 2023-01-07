@@ -3,7 +3,7 @@
 
 ModifyDataWindow::ModifyDataWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::DeleteWindow)
+    ui(new Ui::ModifyWindow)
 {
     ui->setupUi(this);
 
